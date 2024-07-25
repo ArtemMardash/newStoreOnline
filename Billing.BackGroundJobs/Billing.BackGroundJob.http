@@ -1,0 +1,6 @@
+@Billing.BackGroundJob_HostAddress = http://localhost:5225
+
+GET {{Billing.BackGroundJob_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

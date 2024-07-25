@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Users.Application.Dtos;
 using Users.Infrastructure;
 using Users.Persistence;
@@ -15,6 +16,13 @@ builder.Services.AddInfrastracture();
 builder.Services.RegisterRabbitMq();
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetService<Context>();
+    context?.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

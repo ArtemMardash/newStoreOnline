@@ -1,4 +1,5 @@
 using MediatR;
+using Users.Domain.ValueObjects;
 
 namespace Users.Domain.Events;
 
@@ -7,7 +8,7 @@ public class UserEdited : INotification
     /// <summary>
     /// id of user to edit
     /// </summary>
-    public Guid Id { get; set; }
+    public UserId Id { get; set; }
 
     /// <summary>
     /// new First name

@@ -1,4 +1,5 @@
 using MediatR;
+using Users.Domain.ValueObjects;
 
 namespace Users.Domain.Events;
 
@@ -7,7 +8,7 @@ public class UserCreated: INotification
     /// <summary>
     /// Id of created user
     /// </summary>
-    public Guid Id { get; set; }
+    public UserId Id { get; set; }
     
     /// <summary>
     /// first name of created yser
@@ -18,4 +19,14 @@ public class UserCreated: INotification
     /// last name of created user
     /// </summary>
     public string LastName { get; set; }
+    
+    /// <summary>
+    /// Email
+    /// </summary>
+    public string Email { get; set; }
+
+    /// <summary>
+    /// Phone number
+    /// </summary>
+    public string PhoneNumber { get; set; }
 }

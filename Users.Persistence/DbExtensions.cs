@@ -1,3 +1,4 @@
+using MediatR;
 using Users.Domain.Entities;
 using Users.Domain.ValueObjects;
 
@@ -8,11 +9,9 @@ public static class DbExtensions
     /// <summary>
     /// Method to convert db user to domain user
     /// </summary>
-    /// <param name="userDb"></param>
-    /// <returns></returns>
     public static User ToDomainEntity(this UserDb userDb)
     {
-        return new User(userDb.Id, userDb.Email, userDb.PhoneNumber, new FullName(userDb.FirstName, userDb.LastName));
+        return new User(new UserId(userDb.Id, userDb.PublicId), userDb.Email, userDb.PhoneNumber, new FullName(userDb.FirstName, userDb.LastName));
     }
 
     /// <summary>
@@ -22,11 +21,13 @@ public static class DbExtensions
     {
         return new UserDb
         {
-            Id = user.Id,
+            Id = user.Id.SystemId,
+            PublicId = user.Id.PublicId,
             PhoneNumber = user.PhoneNumber,
             Email = user.Email,
             FirstName = user.FullName.FirstName,
-            LastName = user.FullName.LastName
+            LastName = user.FullName.LastName,
+            DomainEvents = user.DomainEvents.ToList()
         };
     }
 }

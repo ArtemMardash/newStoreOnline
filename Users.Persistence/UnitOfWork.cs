@@ -1,3 +1,4 @@
+using MediatR;
 using Users.Application.Interfaces;
 
 namespace Users.Persistence;
@@ -5,10 +6,12 @@ namespace Users.Persistence;
 public class UnitOfWork: IUnitOfWork
 {
     private readonly Context _context;
+    private readonly IMediator _mediator;
 
-    public UnitOfWork(Context context)
+    public UnitOfWork(Context context, IMediator mediator)
     {
         _context = context;
+        _mediator = mediator;
     }
     public void Dispose()
     {
@@ -18,9 +21,24 @@ public class UnitOfWork: IUnitOfWork
     /// <summary>
     /// Method to save async 
     /// </summary>
-    public Task SaveChangesAsync(CancellationToken cancellationToken)
+    public async Task SaveChangesAsync(CancellationToken cancellationToken)
     {
-        return _context.SaveChangesAsync(cancellationToken);
+        var entities = _context.ChangeTracker
+            .Entries<EntityDb>()
+            .Select(e => e.Entity)
+            .Where(e => e.DomainEvents.Any())
+            .ToList();
+        
+        var domainEvents = entities.SelectMany(e => e.DomainEvents).ToList();
+        
+        entities.ForEach(e => e.DomainEvents.Clear());
+        
+        foreach (var domainEvent in domainEvents)
+        {
+            await _mediator.Publish(domainEvent, cancellationToken);
+        }
+        
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
     /// <summary>
@@ -29,5 +47,18 @@ public class UnitOfWork: IUnitOfWork
     public void SaveChanges()
     {
         _context.SaveChanges(); 
+        var entities = _context.ChangeTracker
+            .Entries<EntityDb>()
+            .Select(e => e.Entity)
+            .Where(e => e.DomainEvents.Any())
+            .ToList();
+        var domainEvents = entities.SelectMany(e => e.DomainEvents);
+        entities.ForEach(e => e.DomainEvents.Clear());
+        foreach (var domainEvent in domainEvents)
+        {
+            _mediator.Publish(domainEvent).GetAwaiter().GetResult();
+        }
     }
+    
+     
 }

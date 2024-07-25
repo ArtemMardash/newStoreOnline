@@ -14,10 +14,6 @@ public static class DependencyInjection
 
     public static IServiceCollection RegisterRabbitMq(this IServiceCollection services)
     {
-        services.AddStackExchangeRedisCache(o =>
-        {
-            o.Configuration = "localhost";
-        });
         services.AddScoped<IBrokerPublisher, BrokerPublisher>();
         services.AddMassTransit(x => { x.UsingRabbitMq(); });
         return services;

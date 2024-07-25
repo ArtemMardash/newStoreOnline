@@ -19,7 +19,8 @@ public class UserRepository: IUserRepository
     public Task AddUserAsync(User user, CancellationToken cancellationToken)
     {
         var userDb = user.ToDbEntity();
-
+        
+        user.DomainEvents.Clear();
         return _context.Users.AddAsync(userDb, cancellationToken).AsTask();
     }
 
@@ -29,6 +30,7 @@ public class UserRepository: IUserRepository
     public void EditUser(User user, CancellationToken cancellationToken)
     {
         _context.Users.Update(user.ToDbEntity());
+        user.DomainEvents.Clear();
     }
 
     /// <summary>

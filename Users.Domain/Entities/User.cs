@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices.JavaScript;
+using SharedKernal;
 using Users.Domain.Events;
 using Users.Domain.Extensions;
 using Users.Domain.ValueObjects;
@@ -9,18 +11,17 @@ public class User : BaseEntity
     /// <summary>
     /// Id of user
     /// </summary>
-    public Guid Id { get; set; }
-
-    /// <summary>
-    /// Email of user
-    /// </summary>
-    public string Email { get; set; }
+   public UserId Id { get; set; }
 
     /// <summary>
     /// Phone number of user
     /// </summary>
     public string PhoneNumber { get; set; }
 
+    /// <summary>
+    /// Email of user
+    /// </summary>
+    public string Email { get; set; }
 
     /// <summary>
     /// Full name of user
@@ -30,7 +31,7 @@ public class User : BaseEntity
     /// <summary>
     /// Constructor with id
     /// </summary>
-    public User(Guid id, string email, string phoneNumber, FullName fullName)
+    public User(UserId id, string email, string phoneNumber, FullName fullName)
     {
         Id = id;
         SetEmail(email);
@@ -43,11 +44,19 @@ public class User : BaseEntity
     /// </summary>
     public User(string email, string phoneNumber, FullName fullName)
     {
-        Id = Guid.NewGuid();
+        Id = new UserId(Guid.NewGuid(),
+            PublicIdGenerator.Generate("usr", int.Parse(DateTime.UtcNow.Millisecond.ToString().Substring(0, 4))));
         SetEmail(email);
         SetPhoneNumber(phoneNumber);
         SetFullName(fullName.ToString());
-        DomainEvents.Add(new UserCreated { Id = Id, FirstName = FullName.FirstName, LastName = FullName.LastName });
+        DomainEvents.Add(new UserCreated
+        {
+            Id = Id, 
+            FirstName = FullName.FirstName,
+            LastName = FullName.LastName,
+            PhoneNumber = PhoneNumber,
+            Email = Email
+        });
     }
 
 
@@ -95,33 +104,33 @@ public class User : BaseEntity
         }
 
         var firstName = splitedString[0];
-        var lastName = splitedString[0];
+        var lastName = splitedString[1];
 
-        var result = new FullName(firstName, lastName);
+        var result = new FullName(firstName.Capitalize(), lastName.Capitalize());
 
         FullName = result;
     }
 
-    public void Edit(string? fullName, string? email, string? phoneNumber )
+    public void Edit(string? fullName, string? email, string? phoneNumber)
     {
         var hasChanges = false;
-        SetIfNotNull(fullName, s=>
+        SetIfNotNull(fullName, s =>
         {
             SetFullName(s);
             hasChanges = true;
         });
-      
+
         SetIfNotNull(email, s =>
         {
             SetEmail(s);
             hasChanges = true;
-        } );
-        
+        });
+
         SetIfNotNull(phoneNumber, s =>
         {
             SetPhoneNumber(s);
             hasChanges = true;
-        } );
+        });
 
         if (hasChanges)
         {
@@ -143,6 +152,4 @@ public class User : BaseEntity
             }
         }
     }
-    
-    
 }

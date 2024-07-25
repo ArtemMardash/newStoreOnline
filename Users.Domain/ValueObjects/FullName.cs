@@ -1,3 +1,5 @@
+using Users.Domain.Extensions;
+
 namespace Users.Domain.ValueObjects;
 
 /// <summary>
@@ -39,7 +41,7 @@ public class FullName
         }
         else
         {
-            FirstName = input;
+            FirstName = input.Capitalize();
         }
     }
 
@@ -54,7 +56,7 @@ public class FullName
         }
         else
         {
-            LastName = input;
+            LastName = input.Capitalize();
         }
     }
 

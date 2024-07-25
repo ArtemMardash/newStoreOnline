@@ -12,7 +12,6 @@ public class BrokerPublisher: IBrokerPublisher
     /// <summary>
     /// Realization of all methods of IBrokPublisher
     /// </summary>
-    /// <param name="publishEndpoint"></param>
     public BrokerPublisher(IPublishEndpoint publishEndpoint)
     {
         _publishEndpoint = publishEndpoint;
@@ -27,7 +26,10 @@ public class BrokerPublisher: IBrokerPublisher
         {
             userCreated.FirstName,
             userCreated.LastName,
-            userCreated.Id
+            userCreated.Id.SystemId,
+            userCreated.Id.PublicId,
+            userCreated.PhoneNumber,
+            userCreated.Email
         }, cancellationToken);
     }
 
@@ -40,7 +42,8 @@ public class BrokerPublisher: IBrokerPublisher
         {
             userEdited.FirstName,
             userEdited.LastName,
-            userEdited.Id,
+            userEdited.Id.SystemId,
+            userEdited.Id.PublicId,
             userEdited.Email,
             userEdited.PhoneNumber
         }, cancellationToken);

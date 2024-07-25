@@ -24,7 +24,7 @@ public class UseCasesTests
 
         await repositoryMock.AddUserAsync(user,CancellationToken.None);
 
-        var result = await repositoryMock.GetUserAsync(user.Id, CancellationToken.None);
+        var result = await repositoryMock.GetUserAsync(user.Id.SystemId, CancellationToken.None);
 
         result.Should().Be(user);
     }
@@ -43,7 +43,7 @@ public class UseCasesTests
 
         await repositoryMock.AddUserAsync(user,CancellationToken.None);
 
-        var result = await repositoryMock.GetUserAsync(user.Id, CancellationToken.None);
+        var result = await repositoryMock.GetUserAsync(user.Id.SystemId, CancellationToken.None);
 
         result.Should().Be(null);
     }

@@ -7,6 +7,8 @@ public interface IUserEdited
     /// </summary>
     public Guid Id { get; set; }
     
+    public string PublicId { get; set; }
+    
     /// <summary>
     /// new first name
     /// </summary>

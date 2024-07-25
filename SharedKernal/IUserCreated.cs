@@ -8,6 +8,11 @@ public interface IUserCreated
     public Guid Id { get; set; }
     
     /// <summary>
+    /// Public id of user
+    /// </summary>
+    public string PublicId { get; set; }
+    
+    /// <summary>
     /// first name of created user
     /// </summary>
     public string FirstName { get; set; }
@@ -16,4 +21,15 @@ public interface IUserCreated
     /// last name of created user
     /// </summary>
     public string LastName { get; set; }
+    
+    /// <summary>
+    /// email
+    /// </summary>
+    public string Email { get; set; }
+    
+    /// <summary>
+    /// phone number
+    /// </summary>
+    public string PhoneNumber { get; set; }
+    
 }

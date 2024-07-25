@@ -22,7 +22,6 @@ public class Context: DbContext
     /// <summary>
     /// Data to db
     /// </summary>
-    /// <param name="modelBuilder"></param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserDb>().HasKey(u => u.Id);

@@ -25,7 +25,7 @@ namespace Users.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Users.Persistence.UserDb", b =>
+            modelBuilder.Entity("Users.Billing.Persistence.UserDb", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
