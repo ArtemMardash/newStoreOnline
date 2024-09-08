@@ -31,7 +31,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 
 app.MapGet("/api/storeOnline/users/{id:guid}/User",
         async (Guid id, IMediator mediator, CancellationToken cancellationToken) =>
@@ -61,8 +60,3 @@ app.MapPut("/api/storeOnline/users/update",
     .WithOpenApi();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

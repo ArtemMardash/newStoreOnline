@@ -10,11 +10,18 @@ public class UserCreatedConsumer : IConsumer<IUserCreated>
 {
     private readonly IUserCreatedUseCase _userCreatedUseCase;
 
+    /// <summary>
+    /// Constructor to implement use case
+    /// </summary>
+    /// <param name="userCreatedUseCase"></param>
     public UserCreatedConsumer(IUserCreatedUseCase userCreatedUseCase)
     {
         _userCreatedUseCase = userCreatedUseCase;
     }
 
+    /// <summary>
+    /// Add table user to DB bill
+    /// </summary>
     public async Task Consume(ConsumeContext<IUserCreated> context)
     {
         var newUser = context.Message;
