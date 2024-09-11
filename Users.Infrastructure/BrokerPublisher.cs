@@ -26,7 +26,7 @@ public class BrokerPublisher: IBrokerPublisher
         {
             userCreated.FirstName,
             userCreated.LastName,
-            userCreated.Id.SystemId,
+            Id = userCreated.Id.SystemId,
             userCreated.Id.PublicId,
             userCreated.PhoneNumber,
             userCreated.Email

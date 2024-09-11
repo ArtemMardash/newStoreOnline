@@ -8,20 +8,20 @@ public interface IBillingRepository
     /// <summary>
     /// Create bill
     /// </summary>
-    Task AddBiling(Bill bill,CancellationToken cancellationToken);
+    Task AddBilingAsync(Bill bill,CancellationToken cancellationToken);
 
     /// <summary>
     /// Delete bill
     /// </summary>
-    Task DeleteBilling(BillId billId, CancellationToken cancellationToken);
+    Task DeleteBillingAsync(BillId billId, CancellationToken cancellationToken);
 
     /// <summary>
     /// Update bill
     /// </summary>
-    Task UpdateBilling(Bill bill, CancellationToken cancellationToken);
+    Task UpdateBillingAsync(Bill bill, CancellationToken cancellationToken);
 
     /// <summary>
     /// Get all bills of one user
     /// </summary>
-    Task<List<Bill>> GetBills(Guid userId, CancellationToken cancellationToken);
+    Task<List<Bill>> GetBillsAsync(Guid userId, CancellationToken cancellationToken);
 }

@@ -1,5 +1,5 @@
 using Billing.Persistence.EntitiesDb;
-using MassTransit.Mediator;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 

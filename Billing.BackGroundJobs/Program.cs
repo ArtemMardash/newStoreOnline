@@ -1,5 +1,5 @@
-
-using Billing.Application;
+using Billing.Application.Interfaces;
+using Billing.BackGroundJobs.UseCases;
 using Billing.Infrastructure;
 using Billing.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -7,8 +7,9 @@ using Microsoft.EntityFrameworkCore;
 var builder = Host.CreateApplicationBuilder(args);
 builder.Services.RegisterRabbitMq();
 builder.Services.RegisterPersistence();
-builder.Services.RegisterUseCases();
 builder.Services.AddInfrastracture();
+builder.Services.AddScoped<IUserCreatedUseCase, UserCreatedUseCase>();
+builder.Services.AddScoped<IUserUpdatedUseCase, UserUpdatedUseCase>();
 
 var host = builder.Build();
 using (var scope = host.Services.CreateScope())
@@ -18,4 +19,5 @@ using (var scope = host.Services.CreateScope())
     var context = services.GetService<BillingContext>();
     context?.Database.Migrate();
 }
+
 host.Run();

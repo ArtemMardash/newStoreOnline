@@ -1,7 +1,7 @@
 using Billing.Application.Interfaces;
 using Billing.Domain.Entities;
 
-namespace Billing.Application.UseCases;
+namespace Billing.BackGroundJobs.UseCases;
 
 public class UserCreatedUseCase: IUserCreatedUseCase
 {

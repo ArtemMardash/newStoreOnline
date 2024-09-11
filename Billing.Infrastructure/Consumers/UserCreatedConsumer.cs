@@ -4,7 +4,7 @@ using Billing.Domain.ValueObjects;
 using MassTransit;
 using SharedKernal;
 
-namespace Billing.BackGroundJobs.Consumers;
+namespace Billing.Infrastructure.Consumers;
 
 public class UserCreatedConsumer : IConsumer<IUserCreated>
 {
@@ -13,7 +13,6 @@ public class UserCreatedConsumer : IConsumer<IUserCreated>
     /// <summary>
     /// Constructor to implement use case
     /// </summary>
-    /// <param name="userCreatedUseCase"></param>
     public UserCreatedConsumer(IUserCreatedUseCase userCreatedUseCase)
     {
         _userCreatedUseCase = userCreatedUseCase;

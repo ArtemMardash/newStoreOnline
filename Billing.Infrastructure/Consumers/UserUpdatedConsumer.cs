@@ -4,17 +4,16 @@ using Billing.Domain.ValueObjects;
 using MassTransit;
 using SharedKernal;
 
-namespace Billing.BackGroundJobs.Consumers;
+namespace Billing.Infrastructure.Consumers;
 
-public class UserEditedConsumer : IConsumer<IUserEdited>
+public class UserUpdatedConsumer : IConsumer<IUserEdited>
 {
     private readonly IUserUpdatedUseCase _useCase;
 
     /// <summary>
     /// Constructor to implement use case
     /// </summary>
-    /// <param name="useCase"></param>
-    public UserEditedConsumer(IUserUpdatedUseCase useCase)
+    public UserUpdatedConsumer(IUserUpdatedUseCase useCase)
     {
         _useCase = useCase;
     }

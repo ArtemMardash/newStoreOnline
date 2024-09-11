@@ -45,7 +45,7 @@ public class User : BaseEntity
     public User(string email, string phoneNumber, FullName fullName)
     {
         Id = new UserId(Guid.NewGuid(),
-            PublicIdGenerator.Generate("usr", int.Parse(DateTime.UtcNow.Millisecond.ToString().Substring(0, 4))));
+            PublicIdGenerator.Generate("usr", int.Parse(DateTime.UtcNow.Subtract(DateTime.UnixEpoch).TotalSeconds.ToString().Substring(0, 4))));
         SetEmail(email);
         SetPhoneNumber(phoneNumber);
         SetFullName(fullName.ToString());

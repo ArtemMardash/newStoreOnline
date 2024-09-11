@@ -1,3 +1,4 @@
+using Billing.Infrastructure.Consumers;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,7 +13,19 @@ public static class DependencyInjection
 
     public static IServiceCollection RegisterRabbitMq(this IServiceCollection services)
     {
-        services.AddMassTransit(x => { x.UsingRabbitMq(); });
+        services.AddMassTransit(x =>
+        {
+            x.AddConsumer<UserCreatedConsumer>();
+            x.AddConsumer<UserUpdatedConsumer>();
+            x.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.ReceiveEndpoint("UserCreated", 
+                    c=>
+                    c.ConfigureConsumer<UserCreatedConsumer>(context) );
+                cfg.ReceiveEndpoint("UserUpdatedConsumer", c=>c.ConfigureConsumer<UserUpdatedConsumer>(context));
+            });
+
+        });
         return services;
     }
 }
