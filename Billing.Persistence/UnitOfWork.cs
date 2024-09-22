@@ -1,14 +1,19 @@
 using Billing.Application.Interfaces;
+using Billing.Persistence.EntitiesDb;
+using MediatR;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Billing.Persistence;
 
 public class UnitOfWork: IUnitOfWork 
 {
     private readonly BillingContext _context;
+    private readonly IMediator _mediator;
 
-    public UnitOfWork(BillingContext context)
+    public UnitOfWork(BillingContext context, IMediator mediator)
     {
         _context = context;
+        _mediator = mediator;
     }
     
     /// <summary>
@@ -22,11 +27,10 @@ public class UnitOfWork: IUnitOfWork
     /// <summary>
     /// Method to save async
     /// </summary>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    public Task SaveChangesAsync(CancellationToken cancellationToken)
+    public async Task SaveChangesAsync(CancellationToken cancellationToken)
     {
-       return _context.SaveChangesAsync(cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+        await DispatchDomainEventsAsync();
     }
 
     /// <summary>
@@ -35,5 +39,19 @@ public class UnitOfWork: IUnitOfWork
     public void SaveChanges()
     {
         _context.SaveChanges();
+    }
+
+    public async Task DispatchDomainEventsAsync()
+    {
+        var domainEventEntities = _context.ChangeTracker.Entries<BaseEntity>()
+            .Select(e => e.Entity)
+            .Where(e => e.DomainEvents.Any())
+            .ToList();
+        var events = domainEventEntities.SelectMany(e => e.DomainEvents).ToList();
+        domainEventEntities.ForEach(e=>e.DomainEvents.Clear());
+        foreach (var domainEvent in events)
+        {
+            await _mediator.Publish(domainEvent);
+        }
     }
 }

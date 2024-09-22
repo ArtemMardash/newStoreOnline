@@ -1,5 +1,7 @@
 using Billing.Application.Interfaces;
+using Billing.Domain;
 using Billing.Domain.Entities;
+using Billing.Domain.Events;
 using Billing.Domain.ValueObjects;
 using Billing.Persistence.EntitiesDb;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +23,16 @@ public class BillingRepository : IBillingRepository
     public async Task AddBilingAsync(Bill bill, CancellationToken cancellationToken)
     {
         var bilDb = await BillToBillDbAsync(bill, cancellationToken);
+
+        var billCreated = new BillCreated
+        {
+            BillId = bilDb.Id,
+            UserId = bilDb.User.Id,
+            OrderId = bilDb.OrderId,
+            Status = bilDb.Status
+        };
+        
+        bilDb.DomainEvents.Add(billCreated);
         await _context.Bills.AddAsync(bilDb, cancellationToken);
     }
 
@@ -47,6 +59,18 @@ public class BillingRepository : IBillingRepository
         if (billDb == null)
         {
             throw new InvalidOperationException("There is no bill with such id");
+        }
+
+
+        if (billDb.Status != bill.Status)
+        {
+            var billChanged = new BillUpdated
+            {
+                SystemId = billDb.Id,
+                OldStatus = billDb.Status,
+                NewStatus = bill.Status
+            };
+            billDb.DomainEvents.Add(billChanged);
         }
 
         billDb.Status = bill.Status;
@@ -83,6 +107,9 @@ public class BillingRepository : IBillingRepository
             billDb.Status);
     }
 
+    /// <summary>
+    /// Method to converse from bill to billDb
+    /// </summary>
     private async Task<BillDb> BillToBillDbAsync(Bill bill, CancellationToken cancellationToken)
     {
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == bill.UserId.SystemId, cancellationToken);
@@ -99,5 +126,20 @@ public class BillingRepository : IBillingRepository
             Status = bill.Status,
             User = user
         };
+    }
+
+    /// <summary>
+    /// Method to get bill by id
+    /// </summary>
+    public async Task<Bill> GetBillByIdAsync(Guid billId, CancellationToken cancellationToken)
+    {
+        var bill = await _context.Bills
+            .Include(b=>b.User)
+            .FirstOrDefaultAsync(b => b.Id == billId, cancellationToken);
+        if (bill is null)
+        {
+            throw new InvalidOperationException("There is no bill with such ID");
+        }
+        return BillDbToBill(bill);
     }
 }

@@ -24,6 +24,9 @@ public class BillDb: BaseEntity
     /// </summary>
     public BillStatus Status { get; set; }
 
+    /// <summary>
+    /// Check if account deleted
+    /// </summary>
     public bool IsDeleted { get; set; }
     
     /// <summary>

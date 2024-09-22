@@ -1,11 +1,14 @@
+using Billing.Application.Dtos;
 using Billing.Infrastructure;
 using Billing.Persistence;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastracture();
-builder.Services.RegisterRabbitMq();
 builder.Services.RegisterPersistence();
+builder.Services.RegisterRabbitMq();
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -21,31 +24,34 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//Method to create a new bill
+app.MapPost("/api/bill/create",
+        async ([FromBody] CreateBillDto dto, [FromServices] IMediator mediator, CancellationToken cancellationToken) =>
+        {
+            await mediator.Send(dto, cancellationToken);
+        })
+    .WithName("CreateNewBill")
+    .WithTags("Bill")
+    .WithOpenApi();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+//Method to update bill's data
+app.MapPut("/api/bill/update",
+        async ([FromBody] UpdateBillDto dto, [FromServices] IMediator mediator, CancellationToken cancellationToken) =>
+        {
+            await mediator.Send(dto, cancellationToken);
+        })
+    .WithName("UpdateBill")
+    .WithTags("Bill")
+    .WithOpenApi();
 
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
+//Method to delete bill
+app.MapDelete("/api/bill/delete",
+        async ([FromBody] DeleteBillDto dto, [FromServices] IMediator mediator, CancellationToken cancellationToken) =>
+        {
+            await mediator.Send(dto, cancellationToken);
+        })
+    .WithName("DeleteBill")
+    .WithTags("Bill")
     .WithOpenApi();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

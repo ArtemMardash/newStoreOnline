@@ -13,6 +13,12 @@ public static class DependencyInjection
 
     public static IServiceCollection RegisterRabbitMq(this IServiceCollection services)
     {
+        services.AddMassTransit(x => { x.UsingRabbitMq(); });
+        return services;
+    }
+    
+    public static IServiceCollection RegisterRabbitMqWithConsumers(this IServiceCollection services)
+    {
         services.AddMassTransit(x =>
         {
             x.AddConsumer<UserCreatedConsumer>();
@@ -21,7 +27,7 @@ public static class DependencyInjection
             {
                 cfg.ReceiveEndpoint("UserCreated", 
                     c=>
-                    c.ConfigureConsumer<UserCreatedConsumer>(context) );
+                        c.ConfigureConsumer<UserCreatedConsumer>(context) );
                 cfg.ReceiveEndpoint("UserUpdatedConsumer", c=>c.ConfigureConsumer<UserUpdatedConsumer>(context));
             });
 

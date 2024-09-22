@@ -1,4 +1,5 @@
 
+using System.Runtime.InteropServices.JavaScript;
 using Billing.Domain.ValueObjects;
 using SharedKernal;
 
@@ -6,7 +7,6 @@ namespace Billing.Domain.Entities;
 
 public class Bill
 {
-    /// добавть orderId, billStatus(enum)
     
     /// <summary>
     /// Id of billing
@@ -45,12 +45,33 @@ public class Bill
     /// </summary>
     public Bill(UserId userId,Guid orderId, BillStatus status )
     {
+        var publicPart = new string (DateTime.UtcNow.Subtract(DateTime.UnixEpoch).TotalSeconds.ToString().Reverse().ToArray()).Substring(0,4); 
         Id = new BillId(Guid.NewGuid(),
-            PublicIdGenerator.Generate("bil", int.Parse(DateTime.UtcNow.Millisecond.ToString().Substring(0, 4))));
+            PublicIdGenerator.Generate("bil", int.Parse(publicPart)));
         UserId = userId;
         OrderId = orderId;
         Status = status;
     }
 
+    /// <summary>
+    /// Method to change status
+    /// </summary>
+    public void ChangeStatus(BillStatus updatedStatus)
+    {
+        switch (updatedStatus)
+        {
+            case BillStatus.New when Status is BillStatus.Unknown:
+                Status = updatedStatus;
+                break;
+            case BillStatus.Payed when Status is BillStatus.New:
+                Status = updatedStatus;
+                break;
+            case BillStatus.Canceled when Status is BillStatus.New:
+                Status = updatedStatus;
+                break;
+            default:
+                throw new InvalidOperationException($"Invalid status transaction from {Status} to {updatedStatus}");
+        }
+    }
 
 }

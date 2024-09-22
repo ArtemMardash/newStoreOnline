@@ -10,6 +10,7 @@ public static class DependencyInjection
     public static void RegisterPersistence(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IBillingRepository, BillingRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddDbContext<BillingContext>(opt =>
         {

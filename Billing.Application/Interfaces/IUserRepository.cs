@@ -13,4 +13,9 @@ public interface IUserRepository
     /// Method to update user
     /// </summary>
     Task UpdateAsync(User updatedUser, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Method to get user by id
+    /// </summary>
+    Task<User> GetUserByIdAsync(Guid systemUserId, CancellationToken cancellationToken);
 }

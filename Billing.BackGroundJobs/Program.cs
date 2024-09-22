@@ -5,7 +5,7 @@ using Billing.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 var builder = Host.CreateApplicationBuilder(args);
-builder.Services.RegisterRabbitMq();
+builder.Services.RegisterRabbitMqWithConsumers();
 builder.Services.RegisterPersistence();
 builder.Services.AddInfrastracture();
 builder.Services.AddScoped<IUserCreatedUseCase, UserCreatedUseCase>();
