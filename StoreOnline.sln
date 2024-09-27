@@ -54,7 +54,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orders.Tests", "Orders.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orders.Domain", "Orders.Domain\Orders.Domain.csproj", "{E07E195C-18AB-49BA-A90D-C57865CFD2F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orders.Appliaction", "Orders.Appliaction\Orders.Appliaction.csproj", "{09416080-A23B-4237-A139-02FC7D8097B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orders.Application", "Orders.Application\Orders.Application.csproj", "{09416080-A23B-4237-A139-02FC7D8097B9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orders.Persistence", "Orders.Persistence\Orders.Persistence.csproj", "{5CAEB4DE-6E27-4509-89D5-0333D927EA81}"
 EndProject

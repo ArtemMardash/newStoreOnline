@@ -1,4 +1,4 @@
-using Orders.Appliaction.Interfaces;
+using Orders.Application.Interfaces;
 
 namespace Orders.Persistence;
 

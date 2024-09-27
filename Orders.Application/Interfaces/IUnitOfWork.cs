@@ -1,4 +1,4 @@
-namespace Orders.Appliaction.Interfaces;
+namespace Orders.Application.Interfaces;
 
 public interface IUnitOfWork: IDisposable
 {

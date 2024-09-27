@@ -16,7 +16,7 @@ public class OrderContext: DbContext
     public OrderContext(DbContextOptions options, IMediator mediator)
     {
         _mediator = mediator;
-        //Database.EnsureCreated();
+         Database.EnsureCreated();
     }
     
     /// <summary>

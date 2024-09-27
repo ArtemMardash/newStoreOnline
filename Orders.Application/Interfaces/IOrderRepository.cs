@@ -1,10 +1,10 @@
 using Orders.Domain;
 
-namespace Orders.Appliaction.Interfaces;
+namespace Orders.Application.Interfaces;
 
 public interface IOrderRepository
 {
     Task CreateAsync(Order order, CancellationToken cancellationToken);
 
-    Task CancelleAsync(string publicId, CancellationToken cancellationToken);
+    Task CancelAsync(Guid systemId, CancellationToken cancellationToken);
 }

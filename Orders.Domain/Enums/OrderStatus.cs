@@ -6,9 +6,10 @@ public enum OrderStatus
     New,
     Assembly,
     TransferredDeliveryService,
-    WaitToDelivery,
+    WaitToDelivery, 
     Delivering,
     IssuedToCourier,
     Delivered,
-    Canceled
+    Rejected,
+    Cancelled
 }

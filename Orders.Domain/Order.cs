@@ -17,20 +17,22 @@ public class Order
     /// </summary>
     public OrderStatus Status { get; set; }
 
-    public Order(OrderId id, OrderStatus status ,DeliveryType deliveryType)
+    public Order(OrderId id, OrderStatus status ,DeliveryType deliveryType, List<Product> products)
     {
         Id = id;
         Status = status;
         DeliveryType = deliveryType;
+        Products = products;
     }
 
-    public Order(DeliveryType deliveryType)
+    public Order(DeliveryType deliveryType, List<Product> products)
     {
         var publicPart = new string (DateTime.UtcNow.Subtract(DateTime.UnixEpoch).TotalSeconds.ToString().Reverse().ToArray()).Substring(0,4); 
         Id = new OrderId(Guid.NewGuid(),
             PublicIdGenerator.Generate("ord", int.Parse(publicPart)));
         DeliveryType = deliveryType;
         Status = OrderStatus.New;
+        Products = products;
     }
 
 }
