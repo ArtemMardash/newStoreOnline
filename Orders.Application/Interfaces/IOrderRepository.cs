@@ -1,4 +1,5 @@
 using Orders.Domain;
+using Orders.Domain.Entities;
 
 namespace Orders.Application.Interfaces;
 

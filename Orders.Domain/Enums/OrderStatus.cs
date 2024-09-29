@@ -4,6 +4,7 @@ public enum OrderStatus
 {
     Unknown,
     New,
+    WaitToPayment,
     Assembly,
     TransferredDeliveryService,
     WaitToDelivery, 

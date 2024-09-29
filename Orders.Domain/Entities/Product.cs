@@ -1,6 +1,4 @@
-using Orders.Domain.ValueObjects;
-
-namespace Orders.Domain;
+namespace Orders.Domain.Entities;
 
 public class Product
 {

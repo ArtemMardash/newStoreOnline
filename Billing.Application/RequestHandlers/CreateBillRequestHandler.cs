@@ -26,7 +26,7 @@ public class CreateBillRequestHandler: IRequestHandler<CreateBillDto>
     public async Task Handle(CreateBillDto request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetUserByIdAsync(request.SystemUserId, cancellationToken);
-        var bill = new Bill(user.Id, request.OrderId, request.Status);
+        var bill = new Bill(user.Id, request.OrderId, request.Status, request.TotalPrice);
         await _billRepository.AddBilingAsync(bill, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     }

@@ -1,6 +1,6 @@
 namespace Orders.Persistence.DbEntities;
 
-public class ProductDb: BaseEntity
+public class ProductDb: EntityDb
 {
     public string PublicId { get; set; }
     

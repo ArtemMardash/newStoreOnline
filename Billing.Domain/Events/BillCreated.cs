@@ -23,4 +23,9 @@ public class BillCreated : INotification
     /// Status of bil
     /// </summary>
     public BillStatus Status { get; set; }
+    
+    /// <summary>
+    /// Total price of bill
+    /// </summary>
+    public double TotalPrice { get; set; }
 }

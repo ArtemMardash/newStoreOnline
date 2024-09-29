@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Orders.Application.Interfaces;
 using Orders.Domain;
+using Orders.Domain.Entities;
 using Orders.Domain.Enums;
 using Orders.Persistence.DbEntities;
 
@@ -29,23 +30,7 @@ public class OrderRepository : IOrderRepository
         }
 
         var status = (OrderStatus)order.Status;
-        switch (status)
-        {
-            case OrderStatus.Unknown:
-                throw new InvalidOperationException("Unknown status");
-                break;
-            case OrderStatus.New:
-            case OrderStatus.Assembly:
-                order.Status = (int)OrderStatus.Cancelled;
-                _context.Orders.Update(order);
-                break;
-            case OrderStatus.TransferredDeliveryService:
-            case OrderStatus.WaitToDelivery:
-            case OrderStatus.Delivering:
-            case OrderStatus.IssuedToCourier:
-            case OrderStatus.Delivered:
-                throw new InvalidOperationException($"You can cancel order with status {status}");
-        }
+        
     }
 
     private OrderDb MapDomainToDbEntity(Order order)
@@ -56,7 +41,9 @@ public class OrderRepository : IOrderRepository
             PublicId = order.Id.PublicId,
             Products = order.Products.Select(MapDomainToDbEntity).ToList(),
             DeliveryType = (int)order.DeliveryType,
-            Status = (int)order.Status
+            Status = (int)order.Status,
+            SystemUserId = order.UserId.SystemId,
+            PublicUserId = order.UserId.PublicId
         };
     }
 

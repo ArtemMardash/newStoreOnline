@@ -49,8 +49,15 @@ namespace Orders.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("PublicUserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("Status")
                         .HasColumnType("integer");
+
+                    b.Property<Guid>("SystemUserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("SystemId");
 

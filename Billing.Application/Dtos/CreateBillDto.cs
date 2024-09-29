@@ -19,4 +19,9 @@ public class CreateBillDto : IRequest
     /// status of bill
     /// </summary>
     public BillStatus Status { get; set; }
+    
+    /// <summary>
+    /// Total price
+    /// </summary>
+    public double TotalPrice { get; set; }
 }

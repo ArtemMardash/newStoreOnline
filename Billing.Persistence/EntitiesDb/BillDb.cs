@@ -29,6 +29,8 @@ public class BillDb: BaseEntity
     /// </summary>
     public bool IsDeleted { get; set; }
     
+    public double TotalPrice { get; set; }
+    
     /// <summary>
     /// User
     /// </summary>

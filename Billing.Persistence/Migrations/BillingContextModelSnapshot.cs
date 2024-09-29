@@ -40,6 +40,9 @@ namespace Billing.Persistence.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
+                    b.Property<double>("TotalPrice")
+                        .HasColumnType("double precision");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 

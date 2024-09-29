@@ -22,18 +22,19 @@ public class BillingRepository : IBillingRepository
     /// </summary>
     public async Task AddBilingAsync(Bill bill, CancellationToken cancellationToken)
     {
-        var bilDb = await BillToBillDbAsync(bill, cancellationToken);
+        var billDb = await BillToBillDbAsync(bill, cancellationToken);
 
         var billCreated = new BillCreated
         {
-            BillId = bilDb.Id,
-            UserId = bilDb.User.Id,
-            OrderId = bilDb.OrderId,
-            Status = bilDb.Status
+            BillId = billDb.Id,
+            UserId = billDb.User.Id,
+            OrderId = billDb.OrderId,
+            Status = billDb.Status,
+            TotalPrice = billDb.TotalPrice
         };
         
-        bilDb.DomainEvents.Add(billCreated);
-        await _context.Bills.AddAsync(bilDb, cancellationToken);
+        billDb.DomainEvents.Add(billCreated);
+        await _context.Bills.AddAsync(billDb, cancellationToken);
     }
 
     /// <summary>
@@ -104,7 +105,7 @@ public class BillingRepository : IBillingRepository
             new BillId(billDb.Id, billDb.PublicId),
             new UserId(billDb.User.Id, billDb.User.PublicId),
             billDb.OrderId,
-            billDb.Status);
+            billDb.Status, billDb.TotalPrice);
     }
 
     /// <summary>
@@ -124,7 +125,8 @@ public class BillingRepository : IBillingRepository
             PublicId = bill.Id.PublicId,
             OrderId = bill.OrderId,
             Status = bill.Status,
-            User = user
+            User = user,
+            TotalPrice = bill.TotalPrice
         };
     }
 

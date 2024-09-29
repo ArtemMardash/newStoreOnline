@@ -25,7 +25,8 @@ public class BillCreatedEventHandler: INotificationHandler<BillCreated>
             BillId = notification.BillId,
             UserId = notification.UserId,
             OrderId = notification.OrderId,
-            Status = (int)notification.Status
+            Status = (int)notification.Status,
+            TotalPrice = notification.TotalPrice
         }, cancellationToken);
     }
 }
