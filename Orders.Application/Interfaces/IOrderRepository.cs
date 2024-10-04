@@ -7,5 +7,7 @@ public interface IOrderRepository
 {
     Task CreateAsync(Order order, CancellationToken cancellationToken);
 
-    Task CancelAsync(Guid systemId, CancellationToken cancellationToken);
+    Task UpdateAsync(Order order, CancellationToken cancellationToken);
+
+    Task<Order> GetOrderByIdAsync(Guid systemId, CancellationToken cancellationToken);
 }

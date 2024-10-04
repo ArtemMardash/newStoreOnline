@@ -20,7 +20,7 @@ public class BillingRepository : IBillingRepository
     /// <summary>
     /// Method to add bill
     /// </summary>
-    public async Task AddBilingAsync(Bill bill, CancellationToken cancellationToken)
+    public async Task AddBillingAsync(Bill bill, CancellationToken cancellationToken)
     {
         var billDb = await BillToBillDbAsync(bill, cancellationToken);
 
@@ -75,6 +75,7 @@ public class BillingRepository : IBillingRepository
         }
 
         billDb.Status = bill.Status;
+        billDb.TotalPrice = bill.TotalPrice;
         _context.Bills.Update(billDb);
     }
 
@@ -96,6 +97,30 @@ public class BillingRepository : IBillingRepository
         return bills;
     }
 
+    /// <summary>
+    /// Method to get bill by id
+    /// </summary>
+    public async Task<Bill> GetBillByIdAsync(Guid billId, CancellationToken cancellationToken)
+    {
+        var bill = await _context.Bills
+            .Include(b=>b.User)
+            .FirstOrDefaultAsync(b => b.Id == billId, cancellationToken);
+        if (bill is null)
+        {
+            throw new InvalidOperationException("There is no bill with such ID");
+        }
+        return BillDbToBill(bill);
+    }
+
+    /// <summary>
+    /// Method to get bill by order Id
+    /// </summary>
+    public async Task<Bill?> GetBillByOrderIdAsync(Guid orderId, CancellationToken cancellationToken)
+    {
+        var bill = await _context.Bills.FirstOrDefaultAsync(b => b.OrderId == orderId, cancellationToken);
+        return bill != null ? BillDbToBill(bill) : null;
+    }
+    
     /// <summary>
     /// From BillDb to bill domain
     /// </summary>
@@ -130,18 +155,5 @@ public class BillingRepository : IBillingRepository
         };
     }
 
-    /// <summary>
-    /// Method to get bill by id
-    /// </summary>
-    public async Task<Bill> GetBillByIdAsync(Guid billId, CancellationToken cancellationToken)
-    {
-        var bill = await _context.Bills
-            .Include(b=>b.User)
-            .FirstOrDefaultAsync(b => b.Id == billId, cancellationToken);
-        if (bill is null)
-        {
-            throw new InvalidOperationException("There is no bill with such ID");
-        }
-        return BillDbToBill(bill);
-    }
+
 }

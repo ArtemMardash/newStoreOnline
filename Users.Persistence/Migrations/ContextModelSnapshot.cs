@@ -10,7 +10,7 @@ using Users.Persistence;
 
 namespace Users.Persistence.Migrations
 {
-    [DbContext(typeof(Context))]
+    [DbContext(typeof(UserContext))]
     partial class ContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

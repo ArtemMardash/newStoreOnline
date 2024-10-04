@@ -2,11 +2,11 @@ namespace Orders.Domain.Entities;
 
 public class Product
 {
-    public string PublicId { get; set; }
+    public string PublicId { get; private set; }
     
-    public double Price { get; set; }
+    public double Price { get; private set; }
     
-    public int Quantity { get; set; }
+    public int Quantity { get; private set; }
 
     /// <summary>
     /// цена и кол-во должна быть больше 0 и надо тримить паблик Id

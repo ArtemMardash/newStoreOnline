@@ -7,9 +7,9 @@ namespace Orders.Persistence;
 public class UnitOfWork: IUnitOfWork
 {
     private readonly OrderContext _context;
-    private readonly Mediator _mediator;
+    private readonly IMediator _mediator;
 
-    public UnitOfWork(OrderContext context, Mediator mediator)
+    public UnitOfWork(OrderContext context, IMediator mediator)
     {
         _context = context;
         _mediator = mediator;

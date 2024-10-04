@@ -8,7 +8,7 @@ public interface IBillingRepository
     /// <summary>
     /// Create bill
     /// </summary>
-    Task AddBilingAsync(Bill bill,CancellationToken cancellationToken);
+    Task AddBillingAsync(Bill bill,CancellationToken cancellationToken);
 
     /// <summary>
     /// Delete bill
@@ -29,4 +29,9 @@ public interface IBillingRepository
     /// Method to get bill by system id
     /// </summary>
     Task<Bill> GetBillByIdAsync(Guid systemId, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Method to get bill by id
+    /// </summary>
+    Task<Bill?> GetBillByOrderIdAsync(Guid orderId, CancellationToken cancellationToken);
 }

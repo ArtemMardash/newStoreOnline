@@ -11,22 +11,22 @@ public class User : BaseEntity
     /// <summary>
     /// Id of user
     /// </summary>
-   public UserId Id { get; set; }
+   public UserId Id { get; private set; }
 
     /// <summary>
     /// Phone number of user
     /// </summary>
-    public string PhoneNumber { get; set; }
+    public string PhoneNumber { get; private set; }
 
     /// <summary>
     /// Email of user
     /// </summary>
-    public string Email { get; set; }
+    public string Email { get; private set; }
 
     /// <summary>
     /// Full name of user
     /// </summary>
-    public FullName FullName { get; set; }
+    public FullName FullName { get; private  set; }
 
     /// <summary>
     /// Constructor with id
@@ -78,8 +78,6 @@ public class User : BaseEntity
     /// <summary>
     /// Method to check email if it's valid
     /// </summary>
-    /// <param name="email"></param>
-    /// <exception cref="ArgumentException"></exception>
     private void SetEmail(string email)
     {
         if (email.IsValidEmail())

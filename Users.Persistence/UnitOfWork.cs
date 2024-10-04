@@ -5,17 +5,17 @@ namespace Users.Persistence;
 
 public class UnitOfWork: IUnitOfWork
 {
-    private readonly Context _context;
+    private readonly UserContext _userContext;
     private readonly IMediator _mediator;
 
-    public UnitOfWork(Context context, IMediator mediator)
+    public UnitOfWork(UserContext userContext, IMediator mediator)
     {
-        _context = context;
+        _userContext = userContext;
         _mediator = mediator;
     }
     public void Dispose()
     {
-        _context.Dispose();
+        _userContext.Dispose();
     }
 
     /// <summary>
@@ -23,7 +23,7 @@ public class UnitOfWork: IUnitOfWork
     /// </summary>
     public async Task SaveChangesAsync(CancellationToken cancellationToken)
     {
-        var entities = _context.ChangeTracker
+        var entities = _userContext.ChangeTracker
             .Entries<EntityDb>()
             .Select(e => e.Entity)
             .Where(e => e.DomainEvents.Any())
@@ -38,7 +38,7 @@ public class UnitOfWork: IUnitOfWork
             await _mediator.Publish(domainEvent, cancellationToken);
         }
         
-        await _context.SaveChangesAsync(cancellationToken);
+        await _userContext.SaveChangesAsync(cancellationToken);
     }
 
     /// <summary>
@@ -46,8 +46,8 @@ public class UnitOfWork: IUnitOfWork
     /// </summary>
     public void SaveChanges()
     {
-        _context.SaveChanges(); 
-        var entities = _context.ChangeTracker
+        _userContext.SaveChanges(); 
+        var entities = _userContext.ChangeTracker
             .Entries<EntityDb>()
             .Select(e => e.Entity)
             .Where(e => e.DomainEvents.Any())

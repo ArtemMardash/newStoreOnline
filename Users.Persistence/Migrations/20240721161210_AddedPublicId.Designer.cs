@@ -11,7 +11,7 @@ using Users.Persistence;
 
 namespace Users.Persistence.Migrations
 {
-    [DbContext(typeof(Context))]
+    [DbContext(typeof(UserContext))]
     [Migration("20240721161210_AddedPublicId")]
     partial class AddedPublicId
     {

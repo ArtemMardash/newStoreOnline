@@ -9,9 +9,9 @@ namespace Catalog.Persistence;
 
 public class ProductRepository : IProductRepository
 {
-    private readonly ProductContext _context;
+    private readonly CatalogContext _context;
 
-    public ProductRepository(ProductContext context)
+    public ProductRepository(CatalogContext context)
     {
         _context = context;
     }

@@ -31,12 +31,12 @@ public class BrokerPublisher: IBrokerPublisher
         }, cancellationToken);
     }
 
-    public async Task PublishOrderStatusChanged(OrderStatusChanged orderStatusChanged, CancellationToken cancellationToken)
+    public async Task PublishOrderUpdated(OrderUpdated orderUpdated, CancellationToken cancellationToken)
     {
-        await _publishEndpoint.Publish<IOrderStatusChanged>(new
+        await _publishEndpoint.Publish<IOrderUpdated>(new
         {
-            OrderId = orderStatusChanged.OrderId,
-            NewStatus = orderStatusChanged.NewStatus
+            OrderId = orderUpdated.OrderId,
+            NewStatus = orderUpdated.NewStatus
         }, cancellationToken);
     }
 }

@@ -10,10 +10,10 @@ public static class DependencyInjection
     {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddDbContext<Context>(opt =>
+        services.AddDbContext<UserContext>(opt =>
         {
             opt.UseNpgsql("Host=localHost;Port=5432;Database=Users;Username=postgres;Password=postgres",
-                builder => builder.MigrationsAssembly(typeof(Context).Assembly.GetName().Name));
+                builder => builder.MigrationsAssembly(typeof(UserContext).Assembly.GetName().Name));
         });
     }
 }

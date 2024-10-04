@@ -6,5 +6,5 @@ public interface IBrokerPublisher
 {
     Task PublishOrderCretedAsync(OrderCreated orderCreated, CancellationToken cancellationToken);
 
-    Task PublishOrderStatusChanged(OrderStatusChanged orderStatusChanged, CancellationToken cancellationToken);
+    Task PublishOrderUpdated(OrderUpdated orderUpdated, CancellationToken cancellationToken);
 }

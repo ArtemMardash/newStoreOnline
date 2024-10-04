@@ -22,10 +22,10 @@ public class UpdateProductRequestHandler : IRequestHandler<UpdateProductDto>
     {
         var product = await _productRepository.GetProductByPublicIdAsync(request.PublicId, cancellationToken);
         product.Unit = (Unit)request.Unit;
-        product.Remaining = request.Remaning;
-        product.Category = request.Category;
-        product.Name = request.Name;
-        product.Price = request.Price;
+        product.SetRemaining(request.Remaning);
+        product.SetCategory(request.Category);
+        product.SetName(request.Name);
+        product.SetPrice(request.Price);
         await _productRepository.UpdateAsync(product, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     }

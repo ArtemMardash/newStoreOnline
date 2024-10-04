@@ -8,15 +8,15 @@ namespace Orders.Domain.Entities;
 
 public class Order: BaseEntity
 {
-    public OrderId Id { get; set; }
+    public OrderId Id { get; private set; }
     
-    public List<Product> Products { get; set; } 
+    public List<Product> Products { get; private set; } 
     
-    public DeliveryType DeliveryType { get; set; }
+    public DeliveryType DeliveryType { get; private set; }
     
-    public OrderStatus Status { get; set; }
+    public OrderStatus Status { get; private set; }
     
-    public UserId UserId { get; set; }
+    public UserId UserId { get; private set; }
 
     public Order(OrderId id, OrderStatus status ,DeliveryType deliveryType, List<Product> products, UserId userId)
     {
@@ -73,6 +73,12 @@ public class Order: BaseEntity
             default:
                 throw new InvalidOperationException($"{Status} can not be changes to {newStatus}");
         }
+        DomainEvents.Add(new OrderUpdated
+        {
+            OrderId = Id.SystemId,
+            NewStatus = (int) newStatus
+        });
+        
     }
 
 }

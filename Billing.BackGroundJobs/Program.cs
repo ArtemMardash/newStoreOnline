@@ -11,7 +11,7 @@ builder.Services.RegisterPersistence();
 builder.Services.AddInfrastracture();
 builder.Services.AddScoped<IUserCreatedUseCase, UserCreatedUseCase>();
 builder.Services.AddScoped<IUserUpdatedUseCase, UserUpdatedUseCase>();
-builder.Services.AddScoped<IOrderCreatedUseCase, OrderCreatedUseCase>();
+builder.Services.AddScoped<IOrderUpdatedUseCase, OrderUpdatedUseCase>();
 
 var host = builder.Build();
 using (var scope = host.Services.CreateScope())

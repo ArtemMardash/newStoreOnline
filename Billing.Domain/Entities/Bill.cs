@@ -39,7 +39,7 @@ public class Bill
         UserId = userId;
         OrderId = orderId;
         Status = status;
-        TotalPrice = totalPrice;
+        SetTotalPrice(totalPrice);
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public class Bill
         UserId = userId;
         OrderId = orderId;
         Status = status;
-        TotalPrice = totalPrice;
+        SetTotalPrice(totalPrice);
     }
 
     /// <summary>
@@ -77,5 +77,15 @@ public class Bill
             default:
                 throw new InvalidOperationException($"Invalid status transaction from {Status} to {updatedStatus}");
         }
+    }
+
+    public void SetTotalPrice(double input)
+    {
+        if (input <= 0)
+        {
+            throw new ArgumentNullException(nameof(TotalPrice), "Total price can not be zero");
+        }
+
+        TotalPrice = input;
     }
 }

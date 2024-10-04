@@ -6,11 +6,11 @@ namespace Users.Persistence;
 
 public class UserRepository: IUserRepository
 {
-    private readonly Context _context;
+    private readonly UserContext _userContext;
 
-    public UserRepository(Context context)
+    public UserRepository(UserContext userContext)
     {
-        _context = context;
+        _userContext = userContext;
     }
     
     /// <summary>
@@ -21,7 +21,7 @@ public class UserRepository: IUserRepository
         var userDb = user.ToDbEntity();
         
         user.DomainEvents.Clear();
-        return _context.Users.AddAsync(userDb, cancellationToken).AsTask();
+        return _userContext.Users.AddAsync(userDb, cancellationToken).AsTask();
     }
 
     /// <summary>
@@ -29,7 +29,7 @@ public class UserRepository: IUserRepository
     /// </summary>
     public void EditUser(User user, CancellationToken cancellationToken)
     {
-        _context.Users.Update(user.ToDbEntity());
+        _userContext.Users.Update(user.ToDbEntity());
         user.DomainEvents.Clear();
     }
 
@@ -38,7 +38,7 @@ public class UserRepository: IUserRepository
     /// </summary>
     public async Task<User?> GetUserAsync(Guid id, CancellationToken cancellationToken)
     {
-        var userDb = await _context.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+        var userDb = await _userContext.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
 
         var user = userDb?.ToDomainEntity();
 

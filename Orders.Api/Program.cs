@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Order.Infrastructure;
 using Orders.Application.Dtos;
 using Orders.Persistence;
@@ -12,6 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.RegisterPersistence();
 builder.Services.AddInfrastracture();
+builder.Services.RegisterRabbitMq();
 
 var app = builder.Build();
 
@@ -22,7 +24,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetService<OrderContext>();
+    context?.Database.Migrate();
+}
+
 
 
 app.MapPost("api/orders/create", async (CreateOrderDto dto,[FromServices] IMediator mediator, CancellationToken cancellationToken) =>
@@ -33,16 +42,29 @@ app.MapPost("api/orders/create", async (CreateOrderDto dto,[FromServices] IMedia
     .WithTags("Orders")
     .WithOpenApi();
 
-app.MapPut("api/orders/{orderId:guid}/cancel",
-    async (Guid orderId, [FromServices]IMediator mediator, CancellationToken cancellationToken) =>
+app.MapPut("api/orders/{orderId:guid}/status/{newStatus:int}",
+    async (Guid orderId, int newStatus, [FromServices]IMediator mediator, CancellationToken cancellationToken) =>
     {
-        var dto = new CancelOrderDto
+        var dto = new UpdateOrderDto
         {
-            SystemId = orderId
+            SystemId = orderId,
+            NewStatus = newStatus
         };
         await mediator.Send(dto, cancellationToken);
     })
-    .WithName("CancelOrder")
+    .WithName("UpdateOrderStatus")
+    .WithTags("Orders")
+    .WithOpenApi();
+app.MapGet("api/orders/getById",
+        async (Guid systemId, [FromServices] IMediator mediator, CancellationToken cancellationToken) =>
+        {
+            var dto = new GetOrderByIdDto
+            {
+                SystemId = systemId
+            };
+            return mediator.Send(dto, cancellationToken);
+        })
+    .WithName("GetOrderById")
     .WithTags("Orders")
     .WithOpenApi();
 

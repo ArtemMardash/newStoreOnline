@@ -4,9 +4,9 @@ namespace Catalog.Persistence;
 
 public class UnitOfWork: IUnitOfWork
 {
-    private readonly ProductContext _context;
+    private readonly CatalogContext _context;
 
-    public UnitOfWork(ProductContext context)
+    public UnitOfWork(CatalogContext context)
     {
         _context = context;
     }

@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Catalog.Persistence.Migrations
 {
-    [DbContext(typeof(ProductContext))]
+    [DbContext(typeof(CatalogContext))]
     [Migration("20240922154212_Initial")]
     partial class Initial
     {

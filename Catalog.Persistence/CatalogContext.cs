@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace Catalog.Persistence;
 
-public class ProductContext : DbContext
+public class CatalogContext : DbContext
 {
     public DbSet<ProductDb> Products { get; set; }
 
-    public ProductContext(DbContextOptions options): base(options)
+    public CatalogContext(DbContextOptions options): base(options)
     {
         Database.EnsureCreated();
     }
@@ -31,15 +31,15 @@ public class ProductContext : DbContext
     }
 }
 
-public class UserContextFactory : IDesignTimeDbContextFactory<ProductContext>
+public class UserContextFactory : IDesignTimeDbContextFactory<CatalogContext>
 {
-    public ProductContext CreateDbContext(string[] args)
+    public CatalogContext CreateDbContext(string[] args)
     {
-        var optionsBuilder = new DbContextOptionsBuilder<ProductContext>();
+        var optionsBuilder = new DbContextOptionsBuilder<CatalogContext>();
         optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Catalog;Username=postgres;Password=postgres",
-            builder => builder.MigrationsAssembly(typeof(ProductContext).Assembly.GetName().Name));
+            builder => builder.MigrationsAssembly(typeof(CatalogContext).Assembly.GetName().Name));
 
-        return new ProductContext(optionsBuilder.Options);
+        return new CatalogContext(optionsBuilder.Options);
     }
 }
 

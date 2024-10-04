@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace Users.Persistence;
 
-public class Context: DbContext
+public class UserContext: DbContext
 {
     private readonly IMediator _mediator;
     
@@ -13,7 +13,7 @@ public class Context: DbContext
     /// </summary>
     public DbSet<UserDb> Users { get; set; }
 
-    public Context(DbContextOptions options, IMediator mediator)
+    public UserContext(DbContextOptions options, IMediator mediator)
     {
         _mediator = mediator;
         //Database.EnsureCreated()
@@ -38,14 +38,14 @@ public class Context: DbContext
     }
 }
 
-public class UserContextFactory : IDesignTimeDbContextFactory<Context>
+public class UserContextFactory : IDesignTimeDbContextFactory<UserContext>
 {
-    public Context CreateDbContext(string[] args)
+    public UserContext CreateDbContext(string[] args)
     {
-        var optionsBuilder = new DbContextOptionsBuilder<Context>();
+        var optionsBuilder = new DbContextOptionsBuilder<UserContext>();
         optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Users;Username=postgres;Password=postgres",
-            builder => builder.MigrationsAssembly(typeof(Context).Assembly.GetName().Name));
+            builder => builder.MigrationsAssembly(typeof(UserContext).Assembly.GetName().Name));
 
-        return new Context(optionsBuilder.Options, null);
+        return new UserContext(optionsBuilder.Options, null);
     }
 }
