@@ -10,4 +10,6 @@ public interface IOrderRepository
     Task UpdateAsync(Order order, CancellationToken cancellationToken);
 
     Task<Order> GetOrderByIdAsync(Guid systemId, CancellationToken cancellationToken);
+
+    Task<List<Order>> GetOrdersWithStatusAssemblyAsync(CancellationToken cancellationToken);
 }

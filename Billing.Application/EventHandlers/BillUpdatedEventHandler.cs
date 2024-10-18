@@ -14,16 +14,14 @@ public class BillUpdatedEventHandler : INotificationHandler<BillUpdated>
         _publishEndpoint = publishEndpoint;
     }
 
-    /// <summary>
-    /// Method to publish a message about updated bill
-    /// </summary>
     public async Task Handle(BillUpdated notification, CancellationToken cancellationToken)
     {
         await _publishEndpoint.Publish<IBillUpdated>(new
         {
-            Id = notification.SystemId,
+            SystemId = notification.SystemId,
             OldStatus = (int)notification.OldStatus,
-            NewStatus = (int)notification.NewStatus
+            NewStatus = (int)notification.NewStatus,
+            OrderId = notification.OrderId
         }, cancellationToken);
     }
 }

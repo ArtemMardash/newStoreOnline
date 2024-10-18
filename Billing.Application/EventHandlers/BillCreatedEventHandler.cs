@@ -1,5 +1,4 @@
 using Billing.Domain.Events;
-using Billing.Domain.ValueObjects;
 using MassTransit;
 using MediatR;
 using SharedKernal;

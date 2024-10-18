@@ -4,7 +4,7 @@ namespace Orders.Application.Interfaces;
 
 public interface IBrokerPublisher
 {
-    Task PublishOrderCretedAsync(OrderCreated orderCreated, CancellationToken cancellationToken);
+    Task PublishOrderCreatedAsync(OrderCreated orderCreated, CancellationToken cancellationToken);
 
-    Task PublishOrderUpdated(OrderUpdated orderUpdated, CancellationToken cancellationToken);
+    Task PublishOrderUpdatedAsync(OrderUpdated orderUpdated, CancellationToken cancellationToken);
 }

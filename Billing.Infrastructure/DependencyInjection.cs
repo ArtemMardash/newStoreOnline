@@ -23,12 +23,16 @@ public static class DependencyInjection
         {
             x.AddConsumer<UserCreatedConsumer>();
             x.AddConsumer<UserUpdatedConsumer>();
+            x.AddConsumer<OrderUpdatedConsumer>();
             x.UsingRabbitMq((context, cfg) =>
             {
                 cfg.ReceiveEndpoint("UserCreated", 
                     c=>
                         c.ConfigureConsumer<UserCreatedConsumer>(context) );
-                cfg.ReceiveEndpoint("UserUpdatedConsumer", c=>c.ConfigureConsumer<UserUpdatedConsumer>(context));
+                cfg.ReceiveEndpoint("UserUpdatedConsumer", c=>
+                    c.ConfigureConsumer<UserUpdatedConsumer>(context));
+                cfg.ReceiveEndpoint("OrderUpdatedConsumer", c => 
+                    c.ConfigureConsumer<OrderUpdatedConsumer>(context));
             });
 
         });

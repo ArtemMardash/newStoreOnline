@@ -19,7 +19,6 @@ public class OrderRepository : IOrderRepository
     public async Task CreateAsync(Order order, CancellationToken cancellationToken)
     {
         await _context.Orders.AddAsync(MapDomainToDbEntity(order), cancellationToken);
-        
     }
 
     public async Task UpdateAsync(Order order, CancellationToken cancellationToken)
@@ -46,6 +45,12 @@ public class OrderRepository : IOrderRepository
             throw new InvalidOperationException("There is no order with such Id");
         }
         return MapDbToDomainEntity(order);
+    }
+
+    public async  Task<List<Order>> GetOrdersWithStatusAssemblyAsync(CancellationToken cancellationToken)
+    {
+        var ordersDb = await _context.Orders.Where(o => o.Status == (int) OrderStatus.Assembly).ToListAsync(cancellationToken);
+        return ordersDb.Select(MapDbToDomainEntity).ToList();
     }
 
     private OrderDb MapDomainToDbEntity(Order order)

@@ -6,6 +6,8 @@ public interface IOrderUpdated
     
     public int NewStatus { get; set; }
     
+    public int DeliveryType { get; set; }
+    
     public List<ProductInfo> Products { get; set; }
     
     public Guid SystemUserId { get; set; }

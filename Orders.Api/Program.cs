@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Order.Infrastructure;
 using Orders.Application.Dtos;
+using Orders.Application.Interfaces;
 using Orders.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.RegisterPersistence();
-builder.Services.AddInfrastracture();
+builder.Services.AddInfrastructure();
 builder.Services.RegisterRabbitMq();
 
 var app = builder.Build();
@@ -67,5 +68,4 @@ app.MapGet("api/orders/getById",
     .WithName("GetOrderById")
     .WithTags("Orders")
     .WithOpenApi();
-
 app.Run();

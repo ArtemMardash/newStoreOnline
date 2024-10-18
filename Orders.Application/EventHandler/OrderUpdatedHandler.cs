@@ -15,6 +15,6 @@ public class OrderUpdatedHandler: INotificationHandler<OrderUpdated>
     
     public Task Handle(OrderUpdated notification, CancellationToken cancellationToken)
     {
-        return _brokerPublisher.PublishOrderUpdated(notification, cancellationToken);
+        return _brokerPublisher.PublishOrderUpdatedAsync(notification, cancellationToken);
     }
 }

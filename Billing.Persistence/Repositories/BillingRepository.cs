@@ -69,7 +69,8 @@ public class BillingRepository : IBillingRepository
             {
                 SystemId = billDb.Id,
                 OldStatus = billDb.Status,
-                NewStatus = bill.Status
+                NewStatus = bill.Status,
+                OrderId = billDb.OrderId
             };
             billDb.DomainEvents.Add(billChanged);
         }

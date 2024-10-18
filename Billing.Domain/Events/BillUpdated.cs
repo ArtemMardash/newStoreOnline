@@ -18,4 +18,9 @@ public class BillUpdated: INotification
     /// New bill status to change
     /// </summary>
     public BillStatus NewStatus { get; set; }
+    
+    /// <summary>
+    /// Id of order
+    /// </summary>
+    public Guid OrderId { get; set; }
 }

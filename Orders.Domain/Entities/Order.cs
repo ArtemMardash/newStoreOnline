@@ -76,7 +76,10 @@ public class Order: BaseEntity
         DomainEvents.Add(new OrderUpdated
         {
             OrderId = Id.SystemId,
-            NewStatus = (int) newStatus
+            NewStatus = (int) newStatus,
+            Products = Products,
+            PublicUserId = UserId.PublicId,
+            SystemUserId = UserId.SystemId
         });
         
     }
