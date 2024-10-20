@@ -74,6 +74,9 @@ public class Bill
             case BillStatus.Canceled when Status is BillStatus.New:
                 Status = updatedStatus;
                 break;
+            case BillStatus.Refund when Status is BillStatus.Payed:
+                Status = updatedStatus;
+                break;
             default:
                 throw new InvalidOperationException($"Invalid status transaction from {Status} to {updatedStatus}");
         }

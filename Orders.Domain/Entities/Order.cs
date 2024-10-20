@@ -64,7 +64,7 @@ public class Order: BaseEntity
             case OrderStatus.WaitToDelivery when newStatus is OrderStatus.Delivering:
                 Status = newStatus;
                 break;
-            case OrderStatus.Delivering when newStatus is OrderStatus.IssuedToCourier or OrderStatus.Delivered:
+            case OrderStatus.Delivering when newStatus is OrderStatus.IssuedToCourier or OrderStatus.Delivered or OrderStatus.Rejected:
                 Status = newStatus;
                 break;
             case OrderStatus.IssuedToCourier when newStatus is OrderStatus.Delivered or OrderStatus.Rejected:
@@ -78,6 +78,7 @@ public class Order: BaseEntity
             OrderId = Id.SystemId,
             NewStatus = (int) newStatus,
             Products = Products,
+            DeliveryType = (int) DeliveryType,
             PublicUserId = UserId.PublicId,
             SystemUserId = UserId.SystemId
         });

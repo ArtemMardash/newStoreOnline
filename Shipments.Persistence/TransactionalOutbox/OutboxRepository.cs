@@ -12,14 +12,11 @@ public class OutboxRepository
         _context = context;
     }
 
-    public Task<List<Outbox>> GetUnprocessedOutboxes(CancellationToken cancellationToken)
+    public async Task<List<Outbox>> GetUnprocessedOutboxes(CancellationToken cancellationToken)
     {
-        var outboxes =  _context.Outboxes
+        return await _context.Outboxes
                 .Where(o => o.Status == OutboxStatus.Pending)
-                .AsEnumerable()
-                .Where(o => DateTime.UtcNow.Subtract(o.UpdatedAt).TotalSeconds <= 30)
-                .ToList();
-        return Task.FromResult<List<Outbox>>(outboxes);
+                .ToListAsync(cancellationToken);
     }
 
     public Task AddOutboxAsync(Outbox outbox, CancellationToken cancellationToken)
