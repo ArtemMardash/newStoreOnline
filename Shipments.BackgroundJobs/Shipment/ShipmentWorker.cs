@@ -47,7 +47,14 @@ public class ShipmentWorker : BackgroundService
                     orderUpdatedDto.NewStatus = (int)OrderStatus.Delivering;
                     break;
                 case OrderStatus.Delivering:
-                    orderUpdatedDto.NewStatus = (int)OrderStatus.IssuedToCourier;
+                    if (orderUpdatedDto.DeliveryType == (int)DeliveryType.Courier)
+                    {
+                        orderUpdatedDto.NewStatus = (int)OrderStatus.IssuedToCourier;
+                    }
+                    else
+                    {
+                        orderUpdatedDto.NewStatus = (int)OrderStatus.Delivered;
+                    }
                     break;
                 case OrderStatus.IssuedToCourier:
                     orderUpdatedDto.NewStatus = randNum.Next(1, 100) <= 50
@@ -68,7 +75,8 @@ public class ShipmentWorker : BackgroundService
             await publishEndPoint.Publish<IShipmentOrderStatusChanged>(new
             {
                 OrderId = orderUpdatedDto.OrderId,
-                OrderStatus = orderUpdatedDto.NewStatus
+                OrderStatus = orderUpdatedDto.NewStatus,
+                DeliveryType = orderUpdatedDto.DeliveryType
             }, cancellationToken);
         }
     }

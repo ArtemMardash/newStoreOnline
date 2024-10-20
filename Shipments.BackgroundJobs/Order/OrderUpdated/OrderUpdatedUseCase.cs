@@ -4,6 +4,7 @@ using SharedKernal;
 using Shipments.Application.Interfaces;
 using Shipments.Application.Order.Dtos;
 using Shipments.Application.Order.Interfaces;
+using Shipments.BackgroundJobs.Order.Enums;
 using Shipments.Persistence.TransactionalOutbox;
 
 namespace Shipments.BackgroundJobs.Order.OrderUpdated;
@@ -12,7 +13,6 @@ public class OrderUpdatedUseCase: IOrderUpdatedUseCase
 {
     private readonly OutboxRepository _outboxRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private const int ASSEMBLY_ORDER_STATUS = 3;
 
     public OrderUpdatedUseCase(OutboxRepository outboxRepository, IUnitOfWork unitOfWork)
     {
@@ -22,7 +22,7 @@ public class OrderUpdatedUseCase: IOrderUpdatedUseCase
     
     public async Task ExecuteAsync(OrderUpdatedDto orderUpdated, CancellationToken cancellationToken)
     {
-        if (orderUpdated.NewStatus == ASSEMBLY_ORDER_STATUS)
+        if (orderUpdated.NewStatus ==(int) OrderStatus.Assembly)
         {
            await  _outboxRepository.AddOutboxAsync(new Outbox
             {

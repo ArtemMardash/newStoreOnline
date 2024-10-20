@@ -64,7 +64,7 @@ public class Order: BaseEntity
             case OrderStatus.WaitToDelivery when newStatus is OrderStatus.Delivering:
                 Status = newStatus;
                 break;
-            case OrderStatus.Delivering when newStatus is OrderStatus.IssuedToCourier:
+            case OrderStatus.Delivering when newStatus is OrderStatus.IssuedToCourier or OrderStatus.Delivered:
                 Status = newStatus;
                 break;
             case OrderStatus.IssuedToCourier when newStatus is OrderStatus.Delivered or OrderStatus.Rejected:
