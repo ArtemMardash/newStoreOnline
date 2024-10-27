@@ -17,6 +17,9 @@ public class OrderUpdatedUseCase : IOrderUpdatedUseCase
         _unitOfWork = unitOfWork;
     }
     
+    /// <summary>
+    /// Method to update bill after updated order
+    /// </summary>
     public async Task ExecuteAsync(IOrderUpdated orderUpdated, CancellationToken cancellationToken)
     {
         if (orderUpdated.NewStatus != 2 && orderUpdated.NewStatus != 9)

@@ -118,7 +118,9 @@ public class BillingRepository : IBillingRepository
     /// </summary>
     public async Task<Bill?> GetBillByOrderIdAsync(Guid orderId, CancellationToken cancellationToken)
     {
-        var bill = await _context.Bills.FirstOrDefaultAsync(b => b.OrderId == orderId, cancellationToken);
+        var bill = await _context.Bills
+            .Include(b=>b.User)
+            .FirstOrDefaultAsync(b => b.OrderId == orderId, cancellationToken);
         return bill != null ? BillDbToBill(bill) : null;
     }
     

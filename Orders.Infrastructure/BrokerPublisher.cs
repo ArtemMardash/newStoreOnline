@@ -1,6 +1,5 @@
 using MassTransit;
 using Orders.Application.Interfaces;
-using Orders.Domain.Enums;
 using Orders.Domain.Events;
 using SharedKernal;
 
@@ -15,6 +14,9 @@ public class BrokerPublisher: IBrokerPublisher
         _publishEndpoint = publishEndpoint;
     }
     
+    /// <summary>
+    /// Method to publish created order
+    /// </summary>
     public async Task PublishOrderCreatedAsync(OrderCreated orderCreated, CancellationToken cancellationToken)
     {
         await _publishEndpoint.Publish<IOrderCreated>(new
@@ -32,6 +34,9 @@ public class BrokerPublisher: IBrokerPublisher
         }, cancellationToken);
     }
 
+    /// <summary>
+    /// Method to publish updated order
+    /// </summary>
     public async Task PublishOrderUpdatedAsync(OrderUpdated orderUpdated, CancellationToken cancellationToken)
     {
         await _publishEndpoint.Publish<IOrderUpdated>(new

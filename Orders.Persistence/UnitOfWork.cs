@@ -15,22 +15,34 @@ public class UnitOfWork: IUnitOfWork
         _mediator = mediator;
     }
     
+    /// <summary>
+    /// Method to dispose
+    /// </summary>
     public void Dispose()
     {
         _context.Dispose();
     }
 
+    /// <summary>
+    /// Method to save changes async
+    /// </summary>
     public async Task SaveChangesAsync(CancellationToken cancellationToken)
     {
         await _context.SaveChangesAsync(cancellationToken);
         await DispatchDomainEventsAsync();
     }
 
+    /// <summary>
+    /// Method to save changes sync
+    /// </summary>
     public void SaveChanges()
     {
         _context.SaveChanges();
     }
     
+    /// <summary>
+    /// Method to dispatch domain events
+    /// </summary>
     public async Task DispatchDomainEventsAsync()
     {
         var domainEventEntities = _context.ChangeTracker.Entries<EntityDb>()

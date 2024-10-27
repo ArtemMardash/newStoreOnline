@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using Orders.Domain.Enums;
+using Common.Enums;
 using Orders.Domain.Events;
 using Orders.Domain.ValueObjects;
 using SharedKernal;
@@ -8,14 +8,30 @@ namespace Orders.Domain.Entities;
 
 public class Order: BaseEntity
 {
+    
+    /// <summary>
+    /// Order Id 
+    /// </summary>
     public OrderId Id { get; private set; }
     
+    /// <summary>
+    /// List of products
+    /// </summary>
     public List<Product> Products { get; private set; } 
     
+    /// <summary>
+    /// Delivery type pf order
+    /// </summary>
     public DeliveryType DeliveryType { get; private set; }
     
+    /// <summary>
+    /// Status of order
+    /// </summary>
     public OrderStatus Status { get; private set; }
     
+    /// <summary>
+    /// User Id of order
+    /// </summary>
     public UserId UserId { get; private set; }
 
     public Order(OrderId id, OrderStatus status ,DeliveryType deliveryType, List<Product> products, UserId userId)
@@ -45,6 +61,9 @@ public class Order: BaseEntity
         });
     }
 
+    /// <summary>
+    /// Logic to set status correctly 
+    /// </summary>
     public void SetStatus(OrderStatus newStatus)
     {
         switch (Status)

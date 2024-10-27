@@ -1,7 +1,7 @@
+using Common.Enums;
 using MediatR;
 using Orders.Application.Dtos;
 using Orders.Application.Interfaces;
-using Orders.Domain.Enums;
 
 namespace Orders.Application.RequestHandlers;
 
@@ -16,6 +16,9 @@ public class UpdateOrderRequestHandler: IRequestHandler<UpdateOrderDto>
         _unitOfWork = unitOfWork;
     }
     
+    /// <summary>
+    /// Method to updated order
+    /// </summary>
     public async Task Handle(UpdateOrderDto request, CancellationToken cancellationToken)
     {
         var order = await _orderRepository.GetOrderByIdAsync(request.SystemId, cancellationToken);

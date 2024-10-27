@@ -16,12 +16,19 @@ public class ProductRepository : IProductRepository
         _context = context;
     }
 
+    /// <summary>
+    /// Method to create a new product
+    /// </summary>
     public async Task CreateAsync(Product product, CancellationToken cancellationToken)
     {
         var productDb = MapDomainEnityToDb(product);
         await _context.Products.AddAsync(productDb, cancellationToken);
     }
 
+    
+    /// <summary>
+    /// Method to get products by category
+    /// </summary>
     public async Task<List<Product>> GetProductsAsync(string? category, CancellationToken cancellationToken)
     {
         var products = new List<Product>();
@@ -41,6 +48,9 @@ public class ProductRepository : IProductRepository
         return products;
     }
 
+    /// <summary>
+    /// Method to update product
+    /// </summary>
     public async Task UpdateAsync(Product product, CancellationToken cancellationToken)
     {
         var productDb = await _context.Products.FirstOrDefaultAsync(p =>p.SystemId == product.Id.SystemId, cancellationToken);
@@ -58,6 +68,9 @@ public class ProductRepository : IProductRepository
         _context.Products.Update(productDb);
     }
 
+    /// <summary>
+    /// Method to get a product by Id
+    /// </summary>
     public async Task<Product> GetProductByPublicIdAsync(string publicId, CancellationToken cancellationToken)
     {
         var product = await _context.Products.FirstOrDefaultAsync(p => p.PublicId == publicId, cancellationToken);
@@ -70,6 +83,9 @@ public class ProductRepository : IProductRepository
         return MapDbToDomainEntities(product);
     }
  
+    /// <summary>
+    /// Mapping from domain entity Product to Db entity ProductDb
+    /// </summary>
     private ProductDb MapDomainEnityToDb(Product product)
     {
         return new ProductDb
@@ -84,6 +100,11 @@ public class ProductRepository : IProductRepository
         };
     }
 
+    /// <summary>
+    /// Mapping from db entity ProductDb to domain entity Product
+    /// </summary>
+    /// <param name="productDb"></param>
+    /// <returns></returns>
     private Product MapDbToDomainEntities(ProductDb productDb)
     {
         return new Product(new ProductId(productDb.SystemId, productDb.PublicId), productDb.Name, productDb.Price,

@@ -13,6 +13,9 @@ public class BillStatusChangedConsumer: IConsumer<IBillUpdated>
         _billStatusChangedUseCase = billStatusChangedUseCase;
     }
     
+    /// <summary>
+    /// Method to consume message about updated bill
+    /// </summary>
     public async Task Consume(ConsumeContext<IBillUpdated> context)
     {
         var message = context.Message;

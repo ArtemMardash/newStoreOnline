@@ -12,6 +12,10 @@ public class OrderCreatedHandler: INotificationHandler<OrderCreated>
     {
         _brokerPublisher = brokerPublisher;
     }
+    
+    /// <summary>
+    /// Method to publish about created order
+    /// </summary>
     public Task Handle(OrderCreated notification, CancellationToken cancellationToken)
     {
         return _brokerPublisher.PublishOrderCreatedAsync(notification, cancellationToken);

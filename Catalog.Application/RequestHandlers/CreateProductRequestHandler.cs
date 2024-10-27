@@ -17,9 +17,12 @@ public class CreateProductRequestHandler : IRequestHandler<CreateProductDto>
         _unitOfWork = unitOfWork;
     }
 
+    /// <summary>
+    /// Method to create a new product
+    /// </summary>
     public async Task Handle(CreateProductDto request, CancellationToken cancellationToken)
     {
-        await _productRepository.CreateAsync(new Product(request.Name, request.Price, request.Remaning, request.Category,
+        await _productRepository.CreateAsync(new Product(request.Name, request.Price, request.Remaining, request.Category,
             (Unit)request.Unit), cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     }

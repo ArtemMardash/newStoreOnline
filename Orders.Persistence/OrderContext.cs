@@ -31,8 +31,8 @@ public class OrderContext: DbContext
         modelBuilder.Entity<OrderDb>().Property(o => o.SystemId).ValueGeneratedNever();
         
         
-        modelBuilder.Entity<ProductDb>().HasKey(p => p.PublicId);
-        modelBuilder.Entity<ProductDb>().Property(p => p.PublicId).ValueGeneratedNever();
+        modelBuilder.Entity<ProductDb>().HasKey(p => p.SystemId);
+        modelBuilder.Entity<ProductDb>().Property(p => p.SystemId).ValueGeneratedNever();
     }
     
     /// <summary>

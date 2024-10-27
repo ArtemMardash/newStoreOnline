@@ -13,6 +13,9 @@ public class OrderUpdatedConsumer: IConsumer<IOrderUpdated>
         _orderUpdatedUseCase = orderUpdatedUseCase;
     }
     
+    /// <summary>
+    /// Method to consume message about updated order
+    /// </summary>
     public async Task Consume(ConsumeContext<IOrderUpdated> context)
     {
         var message = context.Message;

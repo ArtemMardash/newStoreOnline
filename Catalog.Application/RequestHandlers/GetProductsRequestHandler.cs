@@ -16,6 +16,10 @@ public class GetProductsRequestHandler: IRequestHandler<GetProductsDto, Products
         _unitOfWork = unitOfWork;
     }
     
+    /// <summary>
+    /// Method to return products by category
+    /// </summary>
+    /// <returns></returns>
     public async Task<ProductsListDto> Handle(GetProductsDto request, CancellationToken cancellationToken)
     {
         var products = await _productRepository.GetProductsAsync(request.Category, cancellationToken);

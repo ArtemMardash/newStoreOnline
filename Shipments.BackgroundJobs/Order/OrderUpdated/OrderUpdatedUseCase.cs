@@ -1,10 +1,10 @@
 using System.Text.Json;
+using Common.Enums;
 using Newtonsoft.Json;
 using SharedKernal;
 using Shipments.Application.Interfaces;
 using Shipments.Application.Order.Dtos;
 using Shipments.Application.Order.Interfaces;
-using Shipments.BackgroundJobs.Order.Enums;
 using Shipments.Persistence.TransactionalOutbox;
 
 namespace Shipments.BackgroundJobs.Order.OrderUpdated;

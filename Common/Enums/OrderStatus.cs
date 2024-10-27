@@ -1,4 +1,4 @@
-namespace Shipments.BackgroundJobs.Order.Enums;
+namespace Common.Enums;
 
 public enum OrderStatus
 {

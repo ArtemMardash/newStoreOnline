@@ -13,6 +13,9 @@ public class ShipmentOrderStatusChangedConsumer: IConsumer<IShipmentOrderStatusC
         _shipmentOrderStatusChangedUseCase = shipmentOrderStatusChangedUseCase;
     }
     
+    /// <summary>
+    /// Method to consume message about changed status from shipment
+    /// </summary>
     public async Task Consume(ConsumeContext<IShipmentOrderStatusChanged> context)
     {
         var message = context.Message;

@@ -1,5 +1,5 @@
+using Common.Enums;
 using Orders.Application.Interfaces;
-using Orders.Domain.Enums;
 using SharedKernal;
 
 namespace Orders.BackgroundJobs.UseCases;
@@ -15,6 +15,9 @@ public class BillStatusChangedUseCase: IBillStatusChangedUseCase
         _unitOfWork = unitOfWork;
     }
     
+    /// <summary>
+    /// Method to change status if bill updated
+    /// </summary>
     public async Task ExecuteAsync(IBillUpdated billUpdated, CancellationToken cancellationToken)
     {
         if (billUpdated.NewStatus != 2)

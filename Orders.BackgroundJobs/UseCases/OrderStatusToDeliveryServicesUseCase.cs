@@ -1,5 +1,5 @@
+using Common.Enums;
 using Orders.Application.Interfaces;
-using Orders.Domain.Enums;
 
 namespace Orders.BackgroundJobs.UseCases;
 
@@ -14,6 +14,9 @@ public class OrderStatusToDeliveryServicesUseCase: IOrderStatusToDeliveryService
         _unitOfWork = unitOfWork;
     }
     
+    /// <summary>
+    /// Method to set status from Assembly to TransferredDeliveryServices
+    /// </summary>
     public async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         var orders = await _orderRepository.GetOrdersWithStatusAssemblyAsync(cancellationToken);

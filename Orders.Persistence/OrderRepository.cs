@@ -1,7 +1,7 @@
+using Common.Enums;
 using Microsoft.EntityFrameworkCore;
 using Orders.Application.Interfaces;
 using Orders.Domain.Entities;
-using Orders.Domain.Enums;
 using Orders.Domain.ValueObjects;
 using Orders.Persistence.DbEntities;
 
@@ -16,11 +16,17 @@ public class OrderRepository : IOrderRepository
         _context = context;
     }
 
+    /// <summary>
+    /// Method to create an order
+    /// </summary>
     public async Task CreateAsync(Order order, CancellationToken cancellationToken)
     {
         await _context.Orders.AddAsync(MapDomainToDbEntity(order), cancellationToken);
     }
 
+    /// <summary>
+    /// Method to update order
+    /// </summary>
     public async Task UpdateAsync(Order order, CancellationToken cancellationToken)
     {
         var orderDb = await _context.Orders
@@ -35,6 +41,9 @@ public class OrderRepository : IOrderRepository
         orderDb.DomainEvents = order.DomainEvents;
     }
 
+    /// <summary>
+    /// Get order by Id 
+    /// </summary>
     public async Task<Order> GetOrderByIdAsync(Guid systemId, CancellationToken cancellationToken)
     {
         var order = await _context.Orders
@@ -47,12 +56,18 @@ public class OrderRepository : IOrderRepository
         return MapDbToDomainEntity(order);
     }
 
+    /// <summary>
+    /// Get orders with status assembly
+    /// </summary>
     public async  Task<List<Order>> GetOrdersWithStatusAssemblyAsync(CancellationToken cancellationToken)
     {
         var ordersDb = await _context.Orders.Where(o => o.Status == (int) OrderStatus.Assembly).ToListAsync(cancellationToken);
         return ordersDb.Select(MapDbToDomainEntity).ToList();
     }
 
+    /// <summary>
+    /// Map domain order to db order
+    /// </summary>
     private OrderDb MapDomainToDbEntity(Order order)
     {
         return new OrderDb
@@ -68,21 +83,31 @@ public class OrderRepository : IOrderRepository
         };
     }
 
+    /// <summary>
+    /// Map domain product to db product
+    /// </summary>
     private ProductDb MapDomainToDbEntity(Product product)
     {
         return new ProductDb
         {
+            SystemId = product.SystemId,
             PublicId = product.PublicId,
             Price = product.Price,
             Quantity = product.Quantity
         };
     }
 
+    /// <summary>
+    /// Map db product to domain product
+    /// </summary>
     private Product MapDbToDomainEntity(ProductDb productDb)
     {
-        return new Product(productDb.PublicId, productDb.Price, productDb.Quantity);
+        return new Product(productDb.SystemId,productDb.PublicId, productDb.Price, productDb.Quantity);
     }
-
+    
+    /// <summary>
+    /// Map db order to domain order
+    /// </summary>
     private Order MapDbToDomainEntity(OrderDb orderDb)
     {
         return new Order(new OrderId(orderDb.SystemId, orderDb.PublicId), (OrderStatus)orderDb.Status,

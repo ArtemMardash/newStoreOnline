@@ -14,6 +14,12 @@ public class GetOrderByIdRequestHandler : IRequestHandler<GetOrderByIdDto, Order
         _orderRepository = orderRepository;
     }
 
+    /// <summary>
+    /// Method to get order by Id
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task<OrderResponse> Handle(GetOrderByIdDto request, CancellationToken cancellationToken)
     {
         var order = await _orderRepository.GetOrderByIdAsync(request.SystemId, cancellationToken);
@@ -28,6 +34,11 @@ public class GetOrderByIdRequestHandler : IRequestHandler<GetOrderByIdDto, Order
         };
     }
 
+    /// <summary>
+    /// From Product to ProductDto
+    /// </summary>
+    /// <param name="product"></param>
+    /// <returns></returns>
     private ProductDto ProductToProductDto(Product product)
     {
         return new ProductDto

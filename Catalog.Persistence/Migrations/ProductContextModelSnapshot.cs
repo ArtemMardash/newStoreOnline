@@ -42,7 +42,7 @@ namespace Catalog.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Remaning")
+                    b.Property<int>("Remaining")
                         .HasColumnType("integer");
 
                     b.Property<int>("Unit")

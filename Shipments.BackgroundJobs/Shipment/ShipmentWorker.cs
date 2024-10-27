@@ -1,10 +1,10 @@
+using Common.Enums;
 using MassTransit;
 using MediatR;
 using Newtonsoft.Json;
 using SharedKernal;
 using Shipments.Application.Interfaces;
 using Shipments.Application.Order.Dtos;
-using Shipments.BackgroundJobs.Order.Enums;
 using Shipments.Persistence.TransactionalOutbox;
 
 namespace Shipments.BackgroundJobs.Shipment;
@@ -20,14 +20,16 @@ public class ShipmentWorker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        using var scope = _serviceProvider.CreateScope();
-        var outboxRepository = scope.ServiceProvider.GetRequiredService<OutboxRepository>();
-        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-        var publishEndPoint = scope.ServiceProvider.GetRequiredService<IPublishEndpoint>();
         var randNum = new Random();
         while (!cancellationToken.IsCancellationRequested)
         {
             await Task.Delay(randNum.Next(3,15)*1000, cancellationToken);
+            
+            using var scope = _serviceProvider.CreateScope();
+            var publishEndPoint = scope.ServiceProvider.GetRequiredService<IPublishEndpoint>();
+            var outboxRepository = scope.ServiceProvider.GetRequiredService<OutboxRepository>();
+            var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+            
             Console.WriteLine("Started processing of message");
             var messages = await outboxRepository.GetUnprocessedOutboxes(cancellationToken);
             foreach (var message in messages)
@@ -38,8 +40,7 @@ public class ShipmentWorker : BackgroundService
                     continue;
                 }
 
-                var currentStatus = (OrderStatus)orderUpdatedDto.NewStatus;
-                switch (currentStatus)
+                var currentStatus = (OrderStatus)orderUpdatedDto.NewStatus; switch (currentStatus)
                 {
                     case OrderStatus.Assembly:
                         orderUpdatedDto.NewStatus = (int)OrderStatus.TransferredDeliveryService;
@@ -89,7 +90,7 @@ public class ShipmentWorker : BackgroundService
                     }, cancellationToken);
                 }
             }
-
+            scope.Dispose();
             Console.WriteLine($"Processed messages: {messages.Count}");
         }
     }

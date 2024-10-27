@@ -41,6 +41,9 @@ public class UnitOfWork: IUnitOfWork
         _context.SaveChanges();
     }
 
+    /// <summary>
+    /// Method to dispatch domain events
+    /// </summary>
     public async Task DispatchDomainEventsAsync()
     {
         var domainEventEntities = _context.ChangeTracker.Entries<BaseEntity>()

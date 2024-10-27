@@ -18,6 +18,9 @@ public class UpdateProductRequestHandler : IRequestHandler<UpdateProductDto>
         _unitOfWork = unitOfWork;
     }
 
+    /// <summary>
+    /// Method to update info about product
+    /// </summary>
     public async Task Handle(UpdateProductDto request, CancellationToken cancellationToken)
     {
         var product = await _productRepository.GetProductByPublicIdAsync(request.PublicId, cancellationToken);

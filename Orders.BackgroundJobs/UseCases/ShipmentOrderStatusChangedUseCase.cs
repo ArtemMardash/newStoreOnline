@@ -1,5 +1,5 @@
+using Common.Enums;
 using Orders.Application.Interfaces;
-using Orders.Domain.Enums;
 using SharedKernal;
 
 namespace Orders.BackgroundJobs.UseCases;
@@ -15,6 +15,9 @@ public class ShipmentOrderStatusChangedUseCase: IShipmentOrderStatusChangedUseCa
         _orderRepository = orderRepository;
     }
     
+    /// <summary>
+    /// Method to change status from Shipment
+    /// </summary>
     public async Task ExecuteAsync(IShipmentOrderStatusChanged shipmentOrderStatusChanged, CancellationToken cancellationToken)
     {
         var order = await _orderRepository.GetOrderByIdAsync(shipmentOrderStatusChanged.OrderId, cancellationToken);

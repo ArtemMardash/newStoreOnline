@@ -35,6 +35,7 @@ using (var scope = app.Services.CreateScope())
 
 
 
+// Method to create a new order
 app.MapPost("api/orders/create", async (CreateOrderDto dto,[FromServices] IMediator mediator, CancellationToken cancellationToken) =>
     {
         await mediator.Send(dto, cancellationToken);
@@ -43,6 +44,7 @@ app.MapPost("api/orders/create", async (CreateOrderDto dto,[FromServices] IMedia
     .WithTags("Orders")
     .WithOpenApi();
 
+// Method to update order status
 app.MapPut("api/orders/{orderId:guid}/status/{newStatus:int}",
     async (Guid orderId, int newStatus, [FromServices]IMediator mediator, CancellationToken cancellationToken) =>
     {
@@ -56,6 +58,8 @@ app.MapPut("api/orders/{orderId:guid}/status/{newStatus:int}",
     .WithName("UpdateOrderStatus")
     .WithTags("Orders")
     .WithOpenApi();
+
+// Method to get order by Id
 app.MapGet("api/orders/getById",
         async (Guid systemId, [FromServices] IMediator mediator, CancellationToken cancellationToken) =>
         {

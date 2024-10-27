@@ -13,6 +13,9 @@ public class OrderUpdatedHandler: INotificationHandler<OrderUpdated>
         _brokerPublisher = brokerPublisher;
     }
     
+    /// <summary>
+    /// Nethod to publish about edited order
+    /// </summary>
     public Task Handle(OrderUpdated notification, CancellationToken cancellationToken)
     {
         return _brokerPublisher.PublishOrderUpdatedAsync(notification, cancellationToken);
