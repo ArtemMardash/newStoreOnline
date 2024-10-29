@@ -1,0 +1,88 @@
+version: '3.4'
+services:
+  postgres.db:
+    image: 'postgres:13.10'
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - /var/lib/postgres/data
+
+  rabbit:
+    image: 'rabbitmq:3-management'
+    ports: 
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  billing.api:
+    image: 'billing.api:latest'
+    ports:
+      - '5097:80'
+    depends_on:
+      - postgres.db
+      - rabbit
+    environment:
+    - "DbConnectionString=Host=postgres.db;Port=5432;Database=Bill;Username=postgres;Password=postgres"
+    - "ASPNETCORE_HTTP_PORTS=80"
+
+  catalog.api:
+    image: 'catalog.api:latest'
+    ports:
+      - '5168:80'
+    depends_on: 
+      - postgres.db
+    environment:
+      - "DbConnectionString=Host=postgres.db;Port=5432;Database=Catalog;Username=postgres;Password=postgres"
+      - "ASPNETCORE_HTTP_PORTS=80"
+
+  billing.backgroundjobs:
+    image: 'billing.backgroundjobs:latest'
+    ports:
+      - '5225:80'
+    depends_on:
+      - postgres.db
+      - rabbit
+    environment:
+      - "DbConnectionString=Host=postgres.db;Port=5432;Database=Bill;Username=postgres;Password=postgres"
+      - "ASPNETCORE_HTTP_PORTS=80"
+  
+  orders.api:
+    image: 'orders.api:latest'
+    ports:
+      - '5116:80'
+    depends_on: 
+      - postgres.db
+      - rabbit
+    environment:
+      - "DbConnectionString=Host=postgres.db;Port=5432;Database=Orders;Username=postgres;Password=postgres"
+      - "ASPNETCORE_HTTP_PORTS=80"
+
+  orders.backgroundjobs:
+    image: 'orders.backgroundjobs:latest'
+    ports:
+      - '5178:80'
+    depends_on:
+      - postgres.db
+      - rabbit
+    environment:
+      - "DbConnectionString=Host=postgres.db;Port=5432;Database=Orders;Username=postgres;Password=postgres"
+      - "ASPNETCORE_HTTP_PORTS=80"
+
+  shipments.backgroundjobs:
+    image: 'shipments.backgroundjobs:latest'
+    ports:
+      - '5269:80'
+    depends_on:
+      - postgres.db
+      - rabbit
+    environment:
+      - "DbConnectionString=Host=postgres.db;Port=5432;Database=Shipments;Username=postgres;Password=postgres"
+      - "ASPNETCORE_HTTP_PORTS=80"
+
+ 
+

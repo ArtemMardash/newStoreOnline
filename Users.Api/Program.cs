@@ -6,12 +6,13 @@ using Users.Infrastructure;
 using Users.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var connectionString = builder.Configuration["DbConnectionString"] ??
+                       builder.Configuration.GetConnectionString("DefaultConnection");
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.RegisterPersistence();
+builder.Services.RegisterPersistence(connectionString);
 builder.Services.AddInfrastracture();
 builder.Services.RegisterRabbitMq();
 

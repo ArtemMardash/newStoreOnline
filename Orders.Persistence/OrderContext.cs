@@ -13,7 +13,7 @@ public class OrderContext: DbContext
 
     public DbSet<ProductDb> Products { get; set; }
     
-    public OrderContext(DbContextOptions options, IMediator mediator)
+    public OrderContext(DbContextOptions options, IMediator mediator): base(options)
     {
         _mediator = mediator;
          //Database.EnsureCreated();
@@ -35,13 +35,6 @@ public class OrderContext: DbContext
         modelBuilder.Entity<ProductDb>().Property(p => p.SystemId).ValueGeneratedNever();
     }
     
-    /// <summary>
-    /// Configuring info for db
-    /// </summary>
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Orders;Username=postgres;Password=postgres");
-    }
 }
 
 public class UserContextFactory : IDesignTimeDbContextFactory<OrderContext>

@@ -5,6 +5,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ./SharedKernal ./SharedKernal
+COPY ./Common ./Common
 # Copy everything
 COPY ./Orders.Api ./Orders.Api
 COPY ./Orders.Application ./Orders.Application

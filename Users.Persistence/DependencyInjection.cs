@@ -6,13 +6,13 @@ namespace Users.Persistence;
 
 public static class DependencyInjection
 {
-    public static void RegisterPersistence(this IServiceCollection services)
+    public static void RegisterPersistence(this IServiceCollection services, string connectedString)
     {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddDbContext<UserContext>(opt =>
         {
-            opt.UseNpgsql("Host=localHost;Port=5432;Database=Users;Username=postgres;Password=postgres",
+            opt.UseNpgsql(connectedString,
                 builder => builder.MigrationsAssembly(typeof(UserContext).Assembly.GetName().Name));
         });
     }

@@ -7,23 +7,22 @@ using Orders.Application.Interfaces;
 using Orders.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var connectionString = builder.Configuration["DbConnectionString"] ??
+                       builder.Configuration.GetConnectionString("DefaultConnection");
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.RegisterPersistence();
+builder.Services.RegisterPersistence(connectionString);
 builder.Services.AddInfrastructure();
 builder.Services.RegisterRabbitMq();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 using (var scope = app.Services.CreateScope())
 {
@@ -34,27 +33,27 @@ using (var scope = app.Services.CreateScope())
 }
 
 
-
 // Method to create a new order
-app.MapPost("api/orders/create", async (CreateOrderDto dto,[FromServices] IMediator mediator, CancellationToken cancellationToken) =>
-    {
-        await mediator.Send(dto, cancellationToken);
-    })
+app.MapPost("api/orders/create",
+        async (CreateOrderDto dto, [FromServices] IMediator mediator, CancellationToken cancellationToken) =>
+        {
+            await mediator.Send(dto, cancellationToken);
+        })
     .WithName("CreateOrder")
     .WithTags("Orders")
     .WithOpenApi();
 
 // Method to update order status
 app.MapPut("api/orders/{orderId:guid}/status/{newStatus:int}",
-    async (Guid orderId, int newStatus, [FromServices]IMediator mediator, CancellationToken cancellationToken) =>
-    {
-        var dto = new UpdateOrderDto
+        async (Guid orderId, int newStatus, [FromServices] IMediator mediator, CancellationToken cancellationToken) =>
         {
-            SystemId = orderId,
-            NewStatus = newStatus
-        };
-        await mediator.Send(dto, cancellationToken);
-    })
+            var dto = new UpdateOrderDto
+            {
+                SystemId = orderId,
+                NewStatus = newStatus
+            };
+            await mediator.Send(dto, cancellationToken);
+        })
     .WithName("UpdateOrderStatus")
     .WithTags("Orders")
     .WithOpenApi();

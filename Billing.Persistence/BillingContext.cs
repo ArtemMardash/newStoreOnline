@@ -13,7 +13,7 @@ public class BillingContext: DbContext
 
     public DbSet<UserDb> Users { get; set; }
     
-    public BillingContext(DbContextOptions options, IMediator mediator)
+    public BillingContext(DbContextOptions options, IMediator mediator): base(options)
     {
         _mediator = mediator;
         //Database.EnsureCreated();
@@ -36,10 +36,10 @@ public class BillingContext: DbContext
     /// <summary>
     /// Configuring info for db
     /// </summary>
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Bill;Username=postgres;Password=postgres");
-    }
+    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    // {
+    //     optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Bill;Username=postgres;Password=postgres");
+    // }
 }
 
 public class UserContextFactory : IDesignTimeDbContextFactory<BillingContext>

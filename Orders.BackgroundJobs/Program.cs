@@ -6,8 +6,9 @@ using Orders.Persistence;
 using SharedKernal;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.RegisterPersistence();
+var connectionString = builder.Configuration["DbConnectionString"] ??
+                       builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.RegisterPersistence(connectionString);
 builder.Services.AddInfrastructure();
 builder.Services.RegisterRabbitMqWithConsumers();
 builder.Services.AddScoped<IBillStatusChangedUseCase, BillStatusChangedUseCase>();

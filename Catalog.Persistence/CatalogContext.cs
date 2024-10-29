@@ -21,14 +21,6 @@ public class CatalogContext : DbContext
         modelBuilder.Entity<ProductDb>().HasKey(p => p.SystemId);
         modelBuilder.Entity<ProductDb>().Property(p => p.SystemId).ValueGeneratedNever();
     }
-
-    /// <summary>
-    /// Configuring info for db
-    /// </summary>
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Catalog;Username=postgres;Password=postgres");
-    }
 }
 
 public class UserContextFactory : IDesignTimeDbContextFactory<CatalogContext>
