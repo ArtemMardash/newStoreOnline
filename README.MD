@@ -19,15 +19,6 @@ This project is a scalable online store application, structured as a set of micr
 - [Technologies](#technologies)
 - [Installation and Setup](#installation-and-setup)
 - [Usage](#usage)
-- [Environment Variables](#environment-variables)
-- [Architecture](#architecture)
-- [Docker Compose](#docker-compose)
-- [Support](#support)
-- [License](#license)
-
-## About the Project
-
-Provide a detailed description here: explain the purpose, main features, and what problems it solves.
 
 ## Technologies
 
