@@ -2,6 +2,7 @@ using Billing.Application.Interfaces;
 using Billing.Domain;
 using Billing.Domain.Entities;
 using Billing.Domain.ValueObjects;
+using Billing.Infrastructure.Notifications;
 using SharedKernal;
 
 namespace Billing.BackGroundJobs.UseCases;
@@ -10,11 +11,13 @@ public class OrderUpdatedUseCase : IOrderUpdatedUseCase
 {
     private readonly IBillingRepository _billingRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IServiceNotificationSender _sender;
 
-    public OrderUpdatedUseCase(IBillingRepository billingRepository, IUnitOfWork unitOfWork)
+    public OrderUpdatedUseCase(IBillingRepository billingRepository, IUnitOfWork unitOfWork, IServiceNotificationSender sender)
     {
         _billingRepository = billingRepository;
         _unitOfWork = unitOfWork;
+        _sender = sender;
     }
     
     /// <summary>
@@ -27,6 +30,7 @@ public class OrderUpdatedUseCase : IOrderUpdatedUseCase
             return;
         }
 
+        var message = string.Empty;
         if(orderUpdated.NewStatus == 9)
         {
             var existedBill = await _billingRepository.GetBillByOrderIdAsync(orderUpdated.OrderId, cancellationToken);
@@ -35,6 +39,7 @@ public class OrderUpdatedUseCase : IOrderUpdatedUseCase
                 throw new InvalidOperationException($"For an order with ID: {orderUpdated.OrderId} doesn't exist bill");
             }
             existedBill.ChangeStatus(BillStatus.Refund);
+            message = $"Bill with Id {existedBill.Id} refund requested";
             await _billingRepository.UpdateBillingAsync(existedBill, cancellationToken);
         }
         else
@@ -56,5 +61,6 @@ public class OrderUpdatedUseCase : IOrderUpdatedUseCase
         }
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _sender.SendAsync(message, cancellationToken);
     }
 }

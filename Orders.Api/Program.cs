@@ -9,13 +9,15 @@ using Orders.Persistence;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration["DbConnectionString"] ??
                        builder.Configuration.GetConnectionString("DefaultConnection");
+var rabbitHost = builder.Configuration.GetConnectionString("RabbitHost");
+var rabbitPort = builder.Configuration.GetConnectionString("RabbitPort");
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.RegisterPersistence(connectionString);
 builder.Services.AddInfrastructure();
-builder.Services.RegisterRabbitMq();
+builder.Services.RegisterRabbitMq(rabbitHost, rabbitPort);
 
 var app = builder.Build();
 
@@ -40,7 +42,7 @@ app.MapPost("api/orders/create",
             await mediator.Send(dto, cancellationToken);
         })
     .WithName("CreateOrder")
-    .WithTags("Orders")
+    .WithTags("Order")
     .WithOpenApi();
 
 // Method to update order status
@@ -55,7 +57,7 @@ app.MapPut("api/orders/{orderId:guid}/status/{newStatus:int}",
             await mediator.Send(dto, cancellationToken);
         })
     .WithName("UpdateOrderStatus")
-    .WithTags("Orders")
+    .WithTags("Order")
     .WithOpenApi();
 
 // Method to get order by Id
@@ -66,9 +68,9 @@ app.MapGet("api/orders/getById",
             {
                 SystemId = systemId
             };
-            return mediator.Send(dto, cancellationToken);
+            return await mediator.Send(dto, cancellationToken);
         })
     .WithName("GetOrderById")
-    .WithTags("Orders")
+    .WithTags("Order")
     .WithOpenApi();
 app.Run();

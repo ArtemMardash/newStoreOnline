@@ -25,9 +25,11 @@ This project is a scalable online store application, structured as a set of micr
 The project utilizes the following technologies and libraries:
 - Programming languages: `C#`.
 - Frameworks: `.NET 8.0`.
-- Database: `NpgSQL`.
+- Database: `PostgreSQL`.
 - Message Broker: `RabbitMQ`
 - Containerization: `Docker`
+- Libraries: `MediatR`, `Microsoft.AspNetCore.OpenApi`, `Microsoft.EntityFrameworkCore.Design`, `Newtonsoft.Json`, `Swashbuckle.AspNetCore`, `MassTransit`, `Microsoft.Extensions.DependencyInjection`, `Telegram.Bot`, `Npgsql.EntityFrameworkCore.PostgreSQL`
+
 
 ## Installation and Setup
 

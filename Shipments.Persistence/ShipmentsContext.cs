@@ -10,7 +10,7 @@ public class ShipmentsContext: DbContext
 
     public ShipmentsContext(DbContextOptions options): base(options)
     {
-        //Database.EnsureCreated();
+        Database.EnsureCreated();
     }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)

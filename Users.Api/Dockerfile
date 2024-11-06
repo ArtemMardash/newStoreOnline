@@ -9,7 +9,7 @@ COPY ./SharedKernal ./SharedKernal
 COPY ./Users.Api ./Users.Api
 COPY ./Users.Application ./Users.Application
 COPY ./Users.Domain ./Users.Domain
-COPY ./Users.Infrastructure ./Users.Infrastructur
+COPY ./Users.Infrastructure ./Users.Infrastructure
 COPY ./Users.Persistence ./Users.Persistence
 WORKDIR ./Users.Api
 RUN dotnet build -c Release -o /App

@@ -12,10 +12,21 @@ public static class DependencyInjection
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(Users.Application.DependencyInjection)));
     }
 
-    public static IServiceCollection RegisterRabbitMq(this IServiceCollection services)
+    public static IServiceCollection RegisterRabbitMq(this IServiceCollection services, string rabbitPort, string rabbitHost)
     {
         services.AddScoped<IBrokerPublisher, BrokerPublisher>();
-        services.AddMassTransit(x => { x.UsingRabbitMq(); });
+        services.AddMassTransit(x =>
+        {
+            x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
+            {
+                cfg.Host($"rabbitmq://{rabbitHost}", handler =>
+                {
+                    handler.Username("guest");
+                    handler.Password("guest");
+                });
+            }));
+        });
+        //services.AddMassTransit(x => { x.UsingRabbitMq(); });
         return services;
     }
 }

@@ -13,7 +13,7 @@ public class UserContext: DbContext
     /// </summary>
     public DbSet<UserDb> Users { get; set; }
 
-    public UserContext(DbContextOptions options, IMediator mediator)
+    public UserContext(DbContextOptions options, IMediator mediator): base(options)
     {
         _mediator = mediator;
         //Database.EnsureCreated()
@@ -26,15 +26,6 @@ public class UserContext: DbContext
     {
         modelBuilder.Entity<UserDb>().HasKey(u => u.Id);
         modelBuilder.Entity<UserDb>().Property(u => u.Id).ValueGeneratedNever();
-    }
-    
-    
-    /// <summary>
-    /// Configuring info for db
-    /// </summary>
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Users;Username=postgres;Password=postgres");
     }
 }
 

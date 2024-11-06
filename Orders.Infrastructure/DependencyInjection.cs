@@ -13,28 +13,45 @@ public static class DependencyInjection
             cfg.RegisterServicesFromAssemblyContaining(typeof(Orders.Application.DependencyInjection)));
     }
 
-    public static IServiceCollection RegisterRabbitMq(this IServiceCollection services)
+    public static IServiceCollection RegisterRabbitMq(this IServiceCollection services, string rabbitHost,
+        string rabbitPort)
     {
         services.AddScoped<IBrokerPublisher, BrokerPublisher>();
-        services.AddMassTransit(x => { x.UsingRabbitMq(); });
+        services.AddMassTransit(x =>
+        {
+            x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
+            {
+                cfg.Host($"rabbitmq://{rabbitHost}", handler =>
+                {
+                    handler.Username("guest");
+                    handler.Password("guest");
+                });
+            }));
+        });
         return services;
     }
 
-    public static IServiceCollection RegisterRabbitMqWithConsumers(this IServiceCollection services)
+    public static IServiceCollection RegisterRabbitMqWithConsumers(this IServiceCollection services, string rabbitHost,
+        string rabbitPort)
     {
         services.AddScoped<IBrokerPublisher, BrokerPublisher>();
         services.AddMassTransit(x =>
         {
             x.AddConsumer<BillStatusChangedConsumer>();
             x.AddConsumer<ShipmentOrderStatusChangedConsumer>();
-            x.UsingRabbitMq((context, cfg) =>
+            x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq((cfg) =>
             {
+                cfg.Host($"rabbitmq://{rabbitHost}", handler =>
+                {
+                    handler.Username("guest");
+                    handler.Password("guest");
+                });
                 cfg.ReceiveEndpoint("BillStatusChangedConsumer",
                     c =>
-                        c.ConfigureConsumer<BillStatusChangedConsumer>(context));
+                        c.ConfigureConsumer<BillStatusChangedConsumer>(provider));
                 cfg.ReceiveEndpoint("ShipmentOrderStatusChangedConsumer",
-                    c => c.ConfigureConsumer<ShipmentOrderStatusChangedConsumer>(context));
-            });
+                    c => c.ConfigureConsumer<ShipmentOrderStatusChangedConsumer>(provider));
+            }));
         });
         return services;
     }

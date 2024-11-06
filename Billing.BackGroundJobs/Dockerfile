@@ -5,6 +5,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ./SharedKernal ./SharedKernal
+COPY ./NuGet.Config .
 # Copy everything
 COPY ./Billing.BackGroundJobs ./Billing.BackGroundJobs
 COPY ./Billing.Application ./Billing.Application

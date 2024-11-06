@@ -8,13 +8,15 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration["DbConnectionString"] ??
                        builder.Configuration.GetConnectionString("DefaultConnection");
+var rabbitHost = builder.Configuration.GetConnectionString("RabbitHost");
+var rabbitPort = builder.Configuration.GetConnectionString("RabbitPort");
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastracture();
 builder.Services.RegisterPersistence(connectionString);
-builder.Services.RegisterRabbitMq();
+builder.Services.RegisterRabbitMq(rabbitHost, rabbitPort);
 
 
 var app = builder.Build();
