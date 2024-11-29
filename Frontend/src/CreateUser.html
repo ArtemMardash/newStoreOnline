@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .row {
+            margin: 10px;
+        }
+
+        .labels {
+            width: 20%;
+            float: left;
+        }
+
+        .inputs {
+            width: 30%;
+            align-content: center;
+        }
+
+        .emptyField {
+            border-color: red;
+        }
+    </style>
+    <h1>Add new User</h1>
+    <script src="./scripts/validation.js"> </script>
+    <script src="scripts/UserSource.js"></script>
+</head>
+
+<body>
+    <div class="row">
+        <div class="labels">
+            <label for="email">Email:</label>
+        </div>
+        <div class="inputs">
+            <input type="text" id="email" class="field" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="labels">
+            <label for="phoneNumber">Phone Number:</label>
+        </div>
+        <div class="inputs">
+            <input type="text" id="phoneNumber" class="field" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="labels">
+            <label for="firstName">First name:</label>
+        </div>
+        <div class="inputs">
+            <input type="text" id="firstName" class="field" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="labels">
+            <label for="lastName">Last name:</label>
+        </div>
+        <div class="inputs">
+            <input type="text" id="lastName" class="field" />
+        </div>
+    </div>
+    <div class="buttonToGetData">
+        <button type="button" id="someButton">Create User</button>
+    </div>
+    <div class="comment" id="comment"></div>
+    <script>
+        const firstNameLength = 30;
+        const lastNameLength = 50;
+        const btn = document.getElementById("someButton");
+        function validateData() {
+            const inputs = document.getElementsByClassName("field");
+            for (let elem of inputs) {
+                switch (elem.id) {
+                    case "firstName":
+                        validateNotEmptyStringWithLength(elem.value, 30, "First Name cannot be empty or longer than 30 letters") === true
+                            ? elem.classList.remove("emptyField")
+                            : elem.classList.add("emptyField");
+                        break;
+                    case "lastName":
+                        validateNotEmptyStringWithLength(elem.value, 50, 'Last Name cannot be empty or longer than 50 letters') === true
+                            ? elem.classList.remove("emptyField")
+                            : elem.classList.add("emptyField");
+                        break;
+                    case "email":
+                        validateEmail(elem.value) === true
+                            ? elem.classList.remove("emptyField")
+                            : elem.classList.add("emptyField");
+                        break;
+                    case "phoneNumber":
+                        validatePhoneNumber(elem.value) === true
+                            ? elem.classList.remove("emptyField")
+                            : elem.classList.add("emptyField");
+                        break;
+                }
+            }
+        }
+        // function validateFirstName(firstName) {
+        //     if (firstName.trim() === "" || firstName.length > firstNameLength) {
+        //         console.error('First Name cannot be empty or longer than 30 letters');
+        //         return false;
+        //     }
+        //     return true;
+        // }
+        // function validateLastName(lastName) {
+        //     if (lastName.trim() === "" || lastName.length > lastNameLength) {
+        //         console.error('Last Name cannot be empty or longer than 50 letters');
+        //         return false;
+        //     }
+        //     return true;
+        // }
+        // function validateEmail(email) {
+        //     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        //     if (email.trim() === "" || !emailRegex.test(email)) {
+        //         console.error('Email cannot be empty');
+        //         return false;
+        //     }
+        //     return true;
+        // }
+        // function validatePhoneNumber(phoneNumber) {
+        //     const phoneRegex = /\(?\d{3}\)?-? *\d{3}-? *-?\d{4}/;
+        //     if (phoneNumber.trim() !== "" && phoneRegex.test(phoneNumber)) {
+        //         return true;
+        //     }
+        //     console.error('Phone number should be no shorter then 10 numbers and no longer then 12 numbers and shoud contain only numbers');
+        //     return false;
+        // }
+
+
+        btn.addEventListener("click", async () => {
+            validateData();
+            const inputs = document.getElementsByClassName("field");
+            let allValid = true;
+            for (let elem of inputs) {
+                if (elem.classList.contains("emptyField")) {
+                    allValid = false;
+                    break;
+                }
+            }
+            if (allValid) {
+                const email = document.getElementById("email");
+                const phoneNumber = document.getElementById("phoneNumber");
+                const firstName = document.getElementById("firstName");
+                const lastName = document.getElementById("lastName");
+                //await sendCreateUser(email, phoneNumber, firstName, lastName);
+                await sendCreateUser({
+                    email: email.value,
+                    phoneNumber: phoneNumber.value,
+                    firstName: firstName.value,
+                    lastName: lastName.value
+                })
+            }
+        })
+    </script>
+</body>
+
+</html>

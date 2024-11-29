@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Users.Application.Dtos;
@@ -14,6 +15,7 @@ var rabbitPort = builder.Configuration.GetConnectionString("RabbitPort");
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors();
 builder.Services.RegisterPersistence(connectionString);
 builder.Services.AddInfrastracture();
 builder.Services.RegisterRabbitMq(rabbitPort, rabbitHost);
@@ -26,6 +28,13 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetService<UserContext>();
     context?.Database.Migrate();
 }
+
+app.UseCors(x =>
+{
+    x.AllowAnyMethod();
+    x.AllowAnyHeader();
+    x.AllowAnyOrigin();
+});
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
@@ -42,11 +51,13 @@ using (var scope = app.Services.CreateScope())
 app.MapGet("/api/storeOnline/users/{id:guid}/User",
         async (Guid id, IMediator mediator, CancellationToken cancellationToken) =>
         {
-            return await mediator.Send(new GetUserDto { Id = id }, cancellationToken);
+            var result = await mediator.Send(new GetUserDto { Id = id }, cancellationToken);
+            return result == null ? Results.NoContent() : Results.Ok(result);
         })
     .WithName("GetUserByID")
     .WithTags("Users")
     .WithOpenApi();
+
 
 app.MapPost("/api/storeOnline/users/create",
         async ([FromBody] CreateUserDto dto, IMediator mediator, CancellationToken cancellationToken) =>
@@ -65,5 +76,6 @@ app.MapPut("/api/storeOnline/users/update",
     .WithName("EditUser")
     .WithTags("Users")
     .WithOpenApi();
+
 
 app.Run();

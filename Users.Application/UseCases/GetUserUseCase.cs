@@ -8,7 +8,7 @@ namespace Users.Application.UseCases;
 /// <summary>
 /// User case to get user by id
 /// </summary>
-public class GetUserUseCase: IRequestHandler<GetUserDto, UserDto>
+public class GetUserUseCase : IRequestHandler<GetUserDto, UserDto?>
 {
     private readonly IUserRepository _repository;
 
@@ -20,23 +20,24 @@ public class GetUserUseCase: IRequestHandler<GetUserDto, UserDto>
     {
         _repository = repository;
     }
-    
+
     /// <summary>
     /// Method to get user by id
     /// </summary>
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<UserDto> Handle(GetUserDto request, CancellationToken cancellationToken)
+    public async Task<UserDto?> Handle(GetUserDto request, CancellationToken cancellationToken)
     {
         var user = await _repository.GetUserAsync(request.Id, cancellationToken);
-
-        return new UserDto
-        {
-            Email = user.Email,
-            FirstName = user.FullName.FirstName,
-            LastName = user.FullName.LastName,
-            PhoneNumber = user.PhoneNumber
-        };
+        return user == null
+            ? null
+            : new UserDto
+            {
+                Email = user.Email,
+                FirstName = user.FullName.FirstName,
+                LastName = user.FullName.LastName,
+                PhoneNumber = user.PhoneNumber
+            };
     }
 }

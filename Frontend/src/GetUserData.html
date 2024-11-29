@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .row {
+            margin: 10px;
+        }
+
+        .labels {
+            width: 20%;
+            float: left;
+        }
+
+        .inputs {
+            width: 30%;
+            align-content: center;
+        }
+
+        .buttinToGetData {
+            width: 10px;
+        }
+
+        .getData {
+            width: 50%;
+        }
+
+        .invalidId {
+            border-color: red;
+        }
+    </style>
+    <h1>Find data about User</h1>
+    <script src="./scripts/validation.js"></script>
+    <script src="./scripts/UserSource.js"></script>
+</head>
+
+<body>
+    <div class="row">
+        <div class="labels">
+            <label for="Id">Enter Id:</label>
+        </div>
+        <div class="inputs">
+            <input type="text" id="Id" class="field" />
+        </div>
+    </div>
+    <div class="buttonToGetData">
+        <button type="button" id="someButton">Get Data</button>
+    </div>
+    <div class="getData">
+        <p id="requestResult"></p>
+    </div>
+    <div class="comment" id="comment"></div>
+    <script>
+        const btn = document.getElementById("someButton");
+        function getData() {
+            const comment = document.getElementById("comment");
+            const id = document.getElementById("Id").value;
+            sendGetUserById(comment, id);
+        }
+
+        btn.addEventListener("click", () => {
+            const id = document.getElementById("Id");
+            isValidId(id.value)
+                ? id.classList.remove("invalidId")
+                : id.classList.add("invalidId");
+            if (!id.classList.contains("invalidId")) {
+                getData();
+            }
+        });
+    </script>
+</body>
+
+</html>
