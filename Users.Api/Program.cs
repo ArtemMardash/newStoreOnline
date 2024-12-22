@@ -62,7 +62,8 @@ app.MapGet("/api/storeOnline/users/{id:guid}/User",
 app.MapPost("/api/storeOnline/users/create",
         async ([FromBody] CreateUserDto dto, IMediator mediator, CancellationToken cancellationToken) =>
         {
-            await mediator.Send(dto, cancellationToken);
+            var id = await mediator.Send(dto, cancellationToken);
+            return new { id };
         })
     .WithName("CreateUser")
     .WithTags("Users")

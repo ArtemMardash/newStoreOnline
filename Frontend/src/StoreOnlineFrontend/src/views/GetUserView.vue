@@ -1,7 +1,8 @@
+<script setup>
+import GetUserById from '../components/usersMethods/GetUserById.vue'
+</script>
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+  <GetUserById />
 </template>
 
 <style>

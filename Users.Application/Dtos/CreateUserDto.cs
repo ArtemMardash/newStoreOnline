@@ -5,7 +5,7 @@ namespace Users.Application.Dtos;
 /// <summary>
 /// Dto to create a new user
 /// </summary>
-public class CreateUserDto: IRequest
+public class CreateUserDto: IRequest<Guid>
 {
     /// <summary>
     /// Email of user
