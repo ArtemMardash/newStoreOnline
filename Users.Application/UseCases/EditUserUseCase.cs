@@ -36,7 +36,7 @@ public class EditUserUseCase : IRequestHandler<EditUserDto>
 
         var fullName = $"{request.FirstName} {request.LastName}";
         user.Edit(fullName, request.Email, request.PhoneNumber);
-        _repository.EditUser(user, cancellationToken);
+        _repository.EditUserAsync(user, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

@@ -1,8 +1,8 @@
 <script setup>
-import TemplateForButton from './templates/TemplateForButton.vue'
-import TemplateForReturnData from './templates/TemplateForReturnData.vue'
-import TemplateHeader from './templates/TemplateHeader.vue'
-import TemplateToInputData from './templates/TemplateToInputData.vue'
+import TemplateForButton from '../templates/TemplateForButton.vue'
+import TemplateForReturnData from '../templates/TemplateForReturnData.vue'
+import TemplateHeader from '../templates/TemplateHeader.vue'
+import TemplateToInputData from '../templates/TemplateToInputData.vue'
 import { ref } from 'vue'
 
 const email = ref('')
@@ -102,7 +102,7 @@ async function sendEditUser(payload) {
   })
   let message = ''
   if (response.status === 200) {
-    message = JSON.stringify(await response.json())
+    message = "User's data successfully updated"
   } else {
     console.error(`Error ${response.status}: ${response.statusText}`)
   }
@@ -111,7 +111,7 @@ async function sendEditUser(payload) {
 
 function validateEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  if (email.trim() === '' || !emailRegex.test(email)) {
+  if (!emailRegex.test(email)) {
     console.error('Invalid email address')
     return false
   }
@@ -119,14 +119,14 @@ function validateEmail(email) {
 }
 function validatePhoneNumber(phoneNumber) {
   const phoneRegex = /\(?\d{3}\)?-? *\d{3}-? *-?\d{4}/
-  if ((phoneNumber.trim() !== '' && phoneRegex.test(phoneNumber)) || phoneNumber === null) {
+  if ((phoneNumber.trim() !== '' && phoneRegex.test(phoneNumber)) || phoneNumber === '') {
     return true
   }
   console.error('Invalid phone number')
   return false
 }
 function validateNotEmptyStringWithLength(firstName, length, errorMessage) {
-  if (firstName.length > length) {
+  if (firstName.trim() === '' || firstName.length > length) {
     console.error(errorMessage ? errorMessage : `invalid value`)
     return false
   }
@@ -169,5 +169,5 @@ function isValidId(id) {
     :input-class="lastNameClass"
   />
   <TemplateForButton button-value="Edit User" @clicked="onClick" />
-  <TemplateForReturnData v-if="responseResult" :returnData="responseResult.id" />
+  <TemplateForReturnData v-if="responseResult" :returnData="responseResult" />
 </template>

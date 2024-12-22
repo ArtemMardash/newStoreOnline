@@ -1,8 +1,8 @@
 <script setup>
-import TemplateForButton from './templates/TemplateForButton.vue'
-import TemplateForReturnData from './templates/TemplateForReturnData.vue'
-import TemplateHeader from './templates/TemplateHeader.vue'
-import TemplateToInputData from './templates/TemplateToInputData.vue'
+import TemplateForButton from '../templates/TemplateForButton.vue'
+import TemplateForReturnData from '../templates/TemplateForReturnData.vue'
+import TemplateHeader from '../templates/TemplateHeader.vue'
+import TemplateToInputData from '../templates/TemplateToInputData.vue'
 import { ref } from 'vue'
 
 const id = ref('')
@@ -35,7 +35,7 @@ function isValidId(id) {
 
 async function onClick() {
   console.log('clicked')
-  if (validate() === true) {
+  if (validate()) {
     responseResult.value = await sendGetUserById(id.value)
     console.log(responseResult.value)
   } else {
@@ -62,5 +62,5 @@ async function sendGetUserById(id) {
   <TemplateToInputData dynamic-id="id" labelValue="ID:" v-model="id" :input-class="idClass" />
   <h1></h1>
   <TemplateForButton button-value="Get Data" @clicked="onClick" />
-  <TemplateForReturnData :returnData="responseResult.value" />
+  <TemplateForReturnData :returnData="responseResult" />
 </template>

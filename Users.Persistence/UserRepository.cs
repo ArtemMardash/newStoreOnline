@@ -30,16 +30,28 @@ public class UserRepository : IUserRepository
         }
         else
         {
-            throw new InvalidOperationException($"The user with email {user.Email} or phone number {user.PhoneNumber} already exists");
+            throw new InvalidOperationException(
+                $"The user with email {user.Email} or phone number {user.PhoneNumber} already exists");
         }
     }
 
     /// <summary>
     /// Method to edit a user
     /// </summary>
-    public void EditUser(User user, CancellationToken cancellationToken)
+    public async Task EditUserAsync(User user, CancellationToken cancellationToken)
     {
-        _userContext.Users.Update(user.ToDbEntity());
+        var userDb = await _userContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id.SystemId, cancellationToken);
+        if (userDb == null)
+        {
+            throw new InvalidOperationException("User not found");
+        }
+
+        userDb.PhoneNumber = user.PhoneNumber;
+        userDb.FirstName = user.FullName.FirstName;
+        userDb.Email = user.Email;
+        userDb.LastName = user.FullName.LastName;
+        userDb.DomainEvents = user.DomainEvents;
+        
         user.DomainEvents.Clear();
     }
 

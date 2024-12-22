@@ -12,7 +12,7 @@ public interface IUserRepository
     /// <summary>
     /// Method to edit a user
     /// </summary>
-    public void EditUser(User user, CancellationToken cancellationToken);
+    public Task EditUserAsync(User user, CancellationToken cancellationToken);
 
     /// <summary>
     /// Method to get user by id

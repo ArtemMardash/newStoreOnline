@@ -1,8 +1,8 @@
 <script setup>
-import TemplateForButton from './templates/TemplateForButton.vue'
-import TemplateForReturnData from './templates/TemplateForReturnData.vue'
-import TemplateHeader from './templates/TemplateHeader.vue'
-import TemplateToInputData from './templates/TemplateToInputData.vue'
+import TemplateForButton from '../templates/TemplateForButton.vue'
+import TemplateForReturnData from '../templates/TemplateForReturnData.vue'
+import TemplateHeader from '../templates/TemplateHeader.vue'
+import TemplateToInputData from '../templates/TemplateToInputData.vue'
 import { ref } from 'vue'
 
 const email = ref('')
