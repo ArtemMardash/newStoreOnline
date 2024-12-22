@@ -6,9 +6,9 @@ import { RouterLink, RouterView } from 'vue-router'
   <header>
     <div class="wrapper">
       <nav>
-        <RouterLink to="/">CreateUser</RouterLink>
-        <RouterLink to="/get-user-by-id">GetUserById</RouterLink>
-        <RouterLink to="/edit-user">Edit User</RouterLink>
+        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/user">User</RouterLink>
+        <RouterLink to="/order">Order</RouterLink>
       </nav>
     </div>
   </header>
@@ -20,6 +20,10 @@ import { RouterLink, RouterView } from 'vue-router'
 header {
   line-height: 1.5;
   max-height: 100vh;
+}
+
+.hidden {
+  visibility: hidden;
 }
 
 .logo {
