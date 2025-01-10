@@ -1,13 +1,13 @@
-<script setup>
+<script setup lang="ts">
+import OrderInfo from '../templates/OrderInfo.vue'
 import TemplateForButton from '../templates/TemplateForButton.vue'
 import TemplateHeader from '../templates/TemplateHeader.vue'
 import TemplateToInputData from '../templates/TemplateToInputData.vue'
 import { ref } from 'vue'
-import UserInfo from '../templates/UserInfo.vue'
 
 const id = ref('')
 const idClass = ref('')
-let responseResult = ref('')
+let responseResult = ref<IOrder>()
 
 function validate() {
   const idError = isValidId(id.value)
@@ -36,13 +36,13 @@ function isValidId(id) {
 async function onClick() {
   console.log('clicked')
   if (validate()) {
-    const message = await sendGetUserById(id.value)
-    if (message === 'User not found') {
+    const message = await sendGetOrder(id.value)
+    if (message === 'Order not found') {
       console.error(message)
     } else {
-      const user = JSON.parse(message)
-      if (user) {
-        responseResult.value = user
+      const order = JSON.parse(message)
+      if (order) {
+        responseResult.value = order
       }
     }
   } else {
@@ -50,13 +50,13 @@ async function onClick() {
   }
 }
 
-async function sendGetUserById(id) {
-  const response = await fetch(`http://localhost:5115/api/storeOnline/users/${id}/User`)
+async function sendGetOrder(id) {
+  const response = await fetch(`http://localhost:5116/api/orders/${id}`)
   let message = ''
   if (response.status === 200) {
     message = JSON.stringify(await response.json())
   } else if (response.status === 204) {
-    message = 'User not found'
+    message = 'Order not found'
   } else {
     console.error(`Error ${response.status}: ${response.statusText}`)
   }
@@ -65,9 +65,9 @@ async function sendGetUserById(id) {
 </script>
 
 <template>
-  <TemplateHeader header-value="Get User's data by Id" />
+  <TemplateHeader header-value="Get Order by Id" />
   <TemplateToInputData dynamic-id="id" labelValue="ID:" v-model="id" :input-class="idClass" />
   <h1></h1>
   <TemplateForButton button-value="Get Data" @clicked="onClick" />
-  <UserInfo v-if="responseResult" :user="responseResult" />
+  <OrderInfo v-if="responseResult" :order="responseResult" />
 </template>

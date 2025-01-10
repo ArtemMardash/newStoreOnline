@@ -21,13 +21,23 @@
 
 <script>
 export default {
-  props: { dynamicId: String, labelValue: String, modelValue: String, inputClass: String },
+  props: {
+    dynamicId: String,
+    labelValue: String,
+    modelValue: String,
+    inputClass: String,
+    onLostFocus: Function,
+    preSendValidate: Function,
+  },
   data() {
     return { text: this.modelValue }
   },
   watch: {
     text(newValue) {
       this.$emit('update:modelValue', newValue)
+      if (this.preSendValidate && this.preSendValidate(newValue) === true) {
+        this.onLostFocus()
+      }
     },
   },
 }

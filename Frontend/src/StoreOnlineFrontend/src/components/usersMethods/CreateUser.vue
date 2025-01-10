@@ -107,7 +107,12 @@ async function sendCreateUser(payload) {
     body: JSON.stringify(payload),
   })
   if (response.ok) {
-    return await response.json()
+    const formattedMessage = response.json
+      .replace(/^{|}$/g, '')
+      .replace(/"/g, '')
+      .split(',')
+      .join('\n')
+    return formattedMessage
   } else {
     console.error(response.statusText)
   }

@@ -15,6 +15,7 @@ var rabbitPort = builder.Configuration.GetConnectionString("RabbitPort");
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors();
 builder.Services.RegisterPersistence(connectionString);
 builder.Services.AddInfrastructure();
 builder.Services.RegisterRabbitMq(rabbitHost, rabbitPort);
@@ -25,7 +26,12 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-
+app.UseCors(x =>
+{
+    x.AllowAnyMethod();
+    x.AllowAnyHeader();
+    x.AllowAnyOrigin();
+});
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -39,7 +45,8 @@ using (var scope = app.Services.CreateScope())
 app.MapPost("api/orders/create",
         async (CreateOrderDto dto, [FromServices] IMediator mediator, CancellationToken cancellationToken) =>
         {
-            await mediator.Send(dto, cancellationToken);
+           var id = await mediator.Send(dto, cancellationToken);
+           return new {id};
         })
     .WithName("CreateOrder")
     .WithTags("Order")
@@ -61,7 +68,7 @@ app.MapPut("api/orders/{orderId:guid}/status/{newStatus:int}",
     .WithOpenApi();
 
 // Method to get order by Id
-app.MapGet("api/orders/getById",
+app.MapGet("api/orders/{systemId:guid}",
         async (Guid systemId, [FromServices] IMediator mediator, CancellationToken cancellationToken) =>
         {
             var dto = new GetOrderByIdDto
@@ -73,4 +80,21 @@ app.MapGet("api/orders/getById",
     .WithName("GetOrderById")
     .WithTags("Order")
     .WithOpenApi();
+
+//Method to get status of order
+app.MapGet("api/orders/{systemId:guid}/status",
+        async (Guid systemId, [FromServices] IMediator mediator, CancellationToken cancellationToken) =>
+        {
+            var dto = new GetOrderByIdDto
+            {
+                SystemId = systemId
+            };
+            var order= await mediator.Send(dto, cancellationToken);
+            return new {order?.Status};
+        })
+    .WithName("GetStatusByOrderId")
+    .WithTags("Order")
+    .WithOpenApi();
+
 app.Run();
+

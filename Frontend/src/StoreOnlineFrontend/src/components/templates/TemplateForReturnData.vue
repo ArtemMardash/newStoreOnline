@@ -12,7 +12,7 @@ defineProps({
 </template>
 <style>
 .comment {
-  width: 50%;
+  width: 100%;
   align-content: left;
 }
 </style>

@@ -2,7 +2,7 @@ using MediatR;
 
 namespace Orders.Application.Dtos;
 
-public class CreateOrderDto: IRequest
+public class CreateOrderDto: IRequest<Guid>
 {
     /// <summary>
     /// Delivery Tyoe

@@ -7,7 +7,7 @@ namespace Users.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static void AddInfrastracture(this IServiceCollection services)
+    public static void AddInfrastructure(this IServiceCollection services)
     {
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(Users.Application.DependencyInjection)));
     }

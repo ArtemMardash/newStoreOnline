@@ -8,7 +8,7 @@ using Orders.Domain.ValueObjects;
 
 namespace Orders.Application.RequestHandlers;
 
-public class CreateOrderRequestHandler: IRequestHandler<CreateOrderDto>
+public class CreateOrderRequestHandler: IRequestHandler<CreateOrderDto, Guid>
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -22,11 +22,12 @@ public class CreateOrderRequestHandler: IRequestHandler<CreateOrderDto>
     /// <summary>
     /// Method to create a new order
     /// </summary>
-    public async Task Handle(CreateOrderDto request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateOrderDto request, CancellationToken cancellationToken)
     {
         var products = request.Products.Select(p => new Product(p.SystemId,p.PublicId, p.Price, p.Quantity)).ToList();
         var order = new Order((DeliveryType) request.DeliveryType, products, new UserId(request.SystemUserId, request.PublicUserId));
         await _orderRepository.CreateAsync(order, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
+        return order.Id.SystemId;
     }
 }

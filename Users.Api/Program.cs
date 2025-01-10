@@ -17,17 +17,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
 builder.Services.RegisterPersistence(connectionString);
-builder.Services.AddInfrastracture();
+builder.Services.AddInfrastructure();
 builder.Services.RegisterRabbitMq(rabbitPort, rabbitHost);
 
 var app = builder.Build();
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
 
-    var context = services.GetService<UserContext>();
-    context?.Database.Migrate();
-}
 
 app.UseCors(x =>
 {

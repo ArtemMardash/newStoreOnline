@@ -25,6 +25,7 @@ public class GetOrderByIdRequestHandler : IRequestHandler<GetOrderByIdDto, Order
             SystemId = order.Id.SystemId,
             PublicId = order.Id.PublicId,
             DeliveryType = (int)order.DeliveryType,
+            Status = (int) order.Status,
             Products = order.Products.Select(ProductToProductDto).ToList(),
             SystemUserId = order.UserId.SystemId,
             PublicUserId = order.UserId.PublicId

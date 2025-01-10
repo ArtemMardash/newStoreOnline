@@ -18,6 +18,11 @@ public class OrderResponse
     public int DeliveryType { get; set; }
     
     /// <summary>
+    /// Status of Order
+    /// </summary>
+    public int Status { get; set; }
+    
+    /// <summary>
     /// List of products 
     /// </summary>
     public List<ProductDto> Products { get; set; }
